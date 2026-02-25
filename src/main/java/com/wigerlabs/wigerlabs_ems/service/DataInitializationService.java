@@ -4,6 +4,7 @@ package com.wigerlabs.wigerlabs_ems.service;
 import com.wigerlabs.wigerlabs_ems.entity.Department;
 import com.wigerlabs.wigerlabs_ems.entity.Position;
 import com.wigerlabs.wigerlabs_ems.entity.Status;
+import com.wigerlabs.wigerlabs_ems.entity.User;
 import com.wigerlabs.wigerlabs_ems.entity.UserRole;
 import com.wigerlabs.wigerlabs_ems.util.HibernateUtil;
 import org.hibernate.Session;
@@ -19,6 +20,7 @@ public class DataInitializationService {
         initializeStatuses();
         initializeDepartments();
         initializePositions();
+        initializeUsers();
     }
 
     private static void initializeUserRoles() {
@@ -139,6 +141,13 @@ public class DataInitializationService {
                         .setParameter("updated_at", LocalDateTime.now())
                         .executeUpdate();
 
+                session.createNativeMutationQuery("INSERT INTO department (id, name, created_at, updated_at) VALUES (:id, :name, :created_at, :updated_at)")
+                        .setParameter("id", 4)
+                        .setParameter("name", "HR")
+                        .setParameter("created_at", LocalDateTime.now())
+                        .setParameter("updated_at", LocalDateTime.now())
+                        .executeUpdate();
+
                 transaction.commit();
                 System.out.println("Default department values initialized successfully.");
             } else {
@@ -234,6 +243,13 @@ public class DataInitializationService {
                         .setParameter("updated_at", LocalDateTime.now())
                         .executeUpdate();
 
+                session.createNativeMutationQuery("INSERT INTO position (id, name, created_at, updated_at) VALUES (:id, :name, :created_at, :updated_at)")
+                        .setParameter("id", 10)
+                        .setParameter("name", "HR Manager")
+                        .setParameter("created_at", LocalDateTime.now())
+                        .setParameter("updated_at", LocalDateTime.now())
+                        .executeUpdate();
+
                 transaction.commit();
                 System.out.println("Default position values initialized successfully.");
             } else {
@@ -245,6 +261,64 @@ public class DataInitializationService {
                 transaction.rollback();
             }
             System.err.println("Error initializing position values: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+    }
+
+    private static void initializeUsers() {
+        Session session = null;
+        Transaction transaction = null;
+
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            transaction = session.beginTransaction();
+
+            // Check if users already exist
+            List<User> existingUsers = session.createQuery("FROM User", User.class).list();
+
+            if (existingUsers.isEmpty()) {
+                // Fetch required entities
+                UserRole adminRole = session.get(UserRole.class, 1); // admin role
+                UserRole managerRole = session.get(UserRole.class, 2); // manager role
+                Position ceoPosition = session.get(Position.class, 1); // CEO position
+                Position hrManagerPosition = session.get(Position.class, 10); // HR Manager position
+                Department engineeringDept = session.get(Department.class, 1); // Engineering department
+                Department hrDept = session.get(Department.class, 4); // HR department
+                Status activeStatus = session.get(Status.class, 1); // active status
+
+                // Create admin user
+                User admin = new User();
+                admin.setName("Admin");
+                admin.setUserRole(adminRole);
+                admin.setPosition(ceoPosition);
+                admin.setDepartment(engineeringDept);
+                admin.setStatus(activeStatus);
+                session.persist(admin);
+
+                // Create HR manager user
+                User hrManager = new User();
+                hrManager.setName("HR Manager");
+                hrManager.setUserRole(managerRole);
+                hrManager.setPosition(hrManagerPosition);
+                hrManager.setDepartment(hrDept);
+                hrManager.setStatus(activeStatus);
+                session.persist(hrManager);
+
+                transaction.commit();
+                System.out.println("Default user values initialized successfully.");
+            } else {
+                System.out.println("User values already exist. Skipping initialization.");
+            }
+
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            System.err.println("Error initializing user values: " + e.getMessage());
             e.printStackTrace();
         } finally {
             if (session != null) {

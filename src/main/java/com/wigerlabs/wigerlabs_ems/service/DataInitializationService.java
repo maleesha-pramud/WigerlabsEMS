@@ -45,6 +45,10 @@ public class DataInitializationService {
                         .setParameter("id", 2)
                         .setParameter("name", "manager")
                         .executeUpdate();
+                session.createNativeMutationQuery("INSERT INTO user_role (id, name) VALUES (:id, :name)")
+                        .setParameter("id", 3)
+                        .setParameter("name", "employee")
+                        .executeUpdate();
 
                 transaction.commit();
                 System.out.println("Default user role values initialized successfully.");

@@ -1,0 +1,26 @@
+/* Tailwind CSS Configuration */
+/* This file contains Tailwind configuration that would typically be in tailwind.config.js */
+/* Note: Since we're using CDN, these are CSS custom properties for our theme */
+
+:root {
+    /* Light Theme Colors */
+    --color-primary: #D4B157;
+    --color-sidebar: #2F3B43;
+    --color-background-light: #FDFBF7;
+    --color-surface-light: #FFFFFF;
+    --color-card-green-light: #E0F2E9;
+    --color-card-pink-light: #FCE4E4;
+
+    /* Font Family */
+    --font-display: 'Plus Jakarta Sans', sans-serif;
+    --font-body: 'Plus Jakarta Sans', sans-serif;
+}
+
+.dark {
+    /* Dark Theme Colors */
+    --color-background-dark: #121212;
+    --color-surface-dark: #1E1E1E;
+    --color-card-green-dark: #163326;
+    --color-card-pink-dark: #3D1A1A;
+}
+

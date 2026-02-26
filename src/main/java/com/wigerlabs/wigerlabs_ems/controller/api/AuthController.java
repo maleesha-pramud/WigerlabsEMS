@@ -39,15 +39,17 @@ public class AuthController {
             session.setMaxInactiveInterval(30 * 60); // 30 minutes
 
             JsonObject response = new JsonObject();
+            JsonObject responseData = new JsonObject();
             response.addProperty("status", true);
             response.addProperty("message", authResult.get("message").getAsString());
-            response.addProperty("sessionId", session.getId());
-            response.addProperty("userId", authResult.get("userId").getAsInt());
-            response.addProperty("userName", authResult.get("userName").getAsString());
-            response.addProperty("userEmail", authResult.get("userEmail").getAsString());
-            response.addProperty("userRole", authResult.get("userRole").getAsString());
-            response.addProperty("departmentName", authResult.get("departmentName").getAsString());
-            response.addProperty("positionName", authResult.get("positionName").getAsString());
+            responseData.addProperty("sessionId", session.getId());
+            responseData.addProperty("userId", authResult.get("userId").getAsInt());
+            responseData.addProperty("userName", authResult.get("userName").getAsString());
+            responseData.addProperty("userEmail", authResult.get("userEmail").getAsString());
+            responseData.addProperty("userRole", authResult.get("userRole").getAsString());
+            responseData.addProperty("departmentName", authResult.get("departmentName").getAsString());
+            responseData.addProperty("positionName", authResult.get("positionName").getAsString());
+            response.add("data", responseData);
 
             return Response.ok().entity(response.toString()).build();
         } else {

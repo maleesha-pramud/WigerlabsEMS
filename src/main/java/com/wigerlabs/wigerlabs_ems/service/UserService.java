@@ -80,14 +80,14 @@ public class UserService {
         JsonObject responseObject = new JsonObject();
         boolean status = false;
         String message = "";
+        JsonArray usersArray = new JsonArray();
 
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             List<User> users = session.createQuery(
-                    "FROM User u WHERE u.userRole.id = :roleId ORDER BY u.name", User.class)
+                            "FROM User u WHERE u.userRole.id = :roleId ORDER BY u.name", User.class)
                     .setParameter("roleId", userRoleId)
                     .getResultList();
 
-            JsonArray usersArray = new JsonArray();
             for (User user : users) {
                 JsonObject userObject = new JsonObject();
                 userObject.addProperty("id", user.getId());
@@ -105,7 +105,6 @@ public class UserService {
 
             status = true;
             message = "Users retrieved successfully";
-            responseObject.add("users", usersArray);
         } catch (Exception e) {
             message = "Error retrieving users: " + e.getMessage();
             e.printStackTrace();
@@ -113,6 +112,7 @@ public class UserService {
 
         responseObject.addProperty("status", status);
         responseObject.addProperty("message", message);
+        responseObject.add("data", usersArray);
         return responseObject.toString();
     }
 

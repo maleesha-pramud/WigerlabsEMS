@@ -1,6 +1,7 @@
 package com.wigerlabs.wigerlabs_ems.controller.api;
 
 import com.wigerlabs.wigerlabs_ems.dto.PositionDTO;
+import com.wigerlabs.wigerlabs_ems.filter.Secured;
 import com.wigerlabs.wigerlabs_ems.service.PositionService;
 import com.wigerlabs.wigerlabs_ems.util.AppUtil;
 import jakarta.ws.rs.*;
@@ -8,6 +9,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 @Path("/position")
+@Secured
 public class PositionController {
 
     private final PositionService positionService = new PositionService();

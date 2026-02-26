@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.wigerlabs.wigerlabs_ems.dto.UserDTO;
 import com.wigerlabs.wigerlabs_ems.entity.*;
 import com.wigerlabs.wigerlabs_ems.util.HibernateUtil;
+import com.wigerlabs.wigerlabs_ems.util.SecurityUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -22,34 +23,45 @@ public class UserService {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
 
-            // Fetch related entities
-            UserRole userRole = session.get(UserRole.class, userDTO.getUserRoleId());
-            Position position = session.get(Position.class, userDTO.getPositionId());
-            Department department = session.get(Department.class, userDTO.getDepartmentId());
-            Status statusEntity = session.get(Status.class, userDTO.getStatusId());
+            // Check if email already exists
+            User existingUser = session.createQuery("FROM User u WHERE u.email = :email", User.class)
+                    .setParameter("email", userDTO.getEmail())
+                    .getSingleResultOrNull();
 
-            if (userRole == null) {
-                message = "Invalid user role";
-            } else if (position == null) {
-                message = "Invalid position";
-            } else if (department == null) {
-                message = "Invalid department";
-            } else if (statusEntity == null) {
-                message = "Invalid status";
+            if (existingUser != null) {
+                message = "User with this email already exists";
             } else {
-                User user = new User();
-                user.setName(userDTO.getName());
-                user.setUserRole(userRole);
-                user.setPosition(position);
-                user.setDepartment(department);
-                user.setStatus(statusEntity);
+                // Fetch related entities
+                UserRole userRole = session.get(UserRole.class, userDTO.getUserRoleId());
+                Position position = session.get(Position.class, userDTO.getPositionId());
+                Department department = session.get(Department.class, userDTO.getDepartmentId());
+                Status statusEntity = session.get(Status.class, userDTO.getStatusId());
 
-                session.persist(user);
-                transaction.commit();
+                if (userRole == null) {
+                    message = "Invalid user role";
+                } else if (position == null) {
+                    message = "Invalid position";
+                } else if (department == null) {
+                    message = "Invalid department";
+                } else if (statusEntity == null) {
+                    message = "Invalid status";
+                } else {
+                    User user = new User();
+                    user.setName(userDTO.getName());
+                    user.setEmail(userDTO.getEmail());
+                    user.setPassword(SecurityUtil.hashPassword(userDTO.getPassword()));
+                    user.setUserRole(userRole);
+                    user.setPosition(position);
+                    user.setDepartment(department);
+                    user.setStatus(statusEntity);
 
-                status = true;
-                message = "User created successfully";
-                responseObject.addProperty("userId", user.getId());
+                    session.persist(user);
+                    transaction.commit();
+
+                    status = true;
+                    message = "User created successfully";
+                    responseObject.addProperty("userId", user.getId());
+                }
             }
         } catch (Exception e) {
             if (transaction != null) {
@@ -234,4 +246,3 @@ public class UserService {
         return responseObject.toString();
     }
 }
-

@@ -1,6 +1,7 @@
 package com.wigerlabs.wigerlabs_ems.controller.api;
 
 import com.wigerlabs.wigerlabs_ems.dto.UserDTO;
+import com.wigerlabs.wigerlabs_ems.filter.RoleAllowed;
 import com.wigerlabs.wigerlabs_ems.service.UserService;
 import com.wigerlabs.wigerlabs_ems.util.AppUtil;
 import jakarta.ws.rs.*;
@@ -8,6 +9,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 @Path("/employee")
+@RoleAllowed({"admin", "manager", "employee"})
 public class EmployeeController {
 
     private final UserService userService = new UserService();
@@ -56,5 +58,3 @@ public class EmployeeController {
         return Response.ok().entity(responseJson).build();
     }
 }
-
-

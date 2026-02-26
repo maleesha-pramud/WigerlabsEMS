@@ -7,6 +7,7 @@ import com.wigerlabs.wigerlabs_ems.entity.Status;
 import com.wigerlabs.wigerlabs_ems.entity.User;
 import com.wigerlabs.wigerlabs_ems.entity.UserRole;
 import com.wigerlabs.wigerlabs_ems.util.HibernateUtil;
+import com.wigerlabs.wigerlabs_ems.util.SecurityUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -297,6 +298,8 @@ public class DataInitializationService {
                 // Create admin user
                 User admin = new User();
                 admin.setName("Admin");
+                admin.setEmail("admin@gmail.com");
+                admin.setPassword(SecurityUtil.hashPassword("admin"));
                 admin.setUserRole(adminRole);
                 admin.setPosition(ceoPosition);
                 admin.setDepartment(engineeringDept);
@@ -306,6 +309,8 @@ public class DataInitializationService {
                 // Create HR manager user
                 User hrManager = new User();
                 hrManager.setName("HR Manager");
+                hrManager.setEmail("hrmanager@gmail.com");
+                hrManager.setPassword(SecurityUtil.hashPassword("hrmanager"));
                 hrManager.setUserRole(managerRole);
                 hrManager.setPosition(hrManagerPosition);
                 hrManager.setDepartment(hrDept);

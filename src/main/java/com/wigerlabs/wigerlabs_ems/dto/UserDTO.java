@@ -1,6 +1,7 @@
 package com.wigerlabs.wigerlabs_ems.dto;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 public class UserDTO implements Serializable {
     private int id;
@@ -11,17 +12,21 @@ public class UserDTO implements Serializable {
     private int positionId;
     private int departmentId;
     private int statusId;
+    private LocalDateTime hireDate;
+    private java.math.BigDecimal salary;
 
     public UserDTO() {
     }
 
-    public UserDTO(int id, String name, int userRoleId, int positionId, int departmentId, int statusId) {
+    public UserDTO(int id, String name, int userRoleId, int positionId, int departmentId, int statusId, LocalDateTime hireDate, java.math.BigDecimal salary) {
         this.id = id;
         this.name = name;
         this.userRoleId = userRoleId;
         this.positionId = positionId;
         this.departmentId = departmentId;
         this.statusId = statusId;
+        this.hireDate = hireDate;
+        this.salary = salary;
     }
 
     public int getId() {
@@ -86,5 +91,21 @@ public class UserDTO implements Serializable {
 
     public void setStatusId(int statusId) {
         this.statusId = statusId;
+    }
+
+    public LocalDateTime getHireDate() {
+        return hireDate;
+    }
+
+    public void setHireDate(LocalDateTime hireDate) {
+        this.hireDate = hireDate;
+    }
+
+    public java.math.BigDecimal getSalary() {
+        return salary;
+    }
+
+    public void setSalary(java.math.BigDecimal salary) {
+        this.salary = salary;
     }
 }

@@ -11,6 +11,7 @@ import com.wigerlabs.wigerlabs_ems.util.SecurityUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -304,6 +305,8 @@ public class DataInitializationService {
                 admin.setPosition(ceoPosition);
                 admin.setDepartment(engineeringDept);
                 admin.setStatus(activeStatus);
+                admin.setHireDate(LocalDateTime.now());
+                admin.setSalary(new java.math.BigDecimal("10000.00"));
                 session.persist(admin);
 
                 // Create HR manager user
@@ -315,6 +318,8 @@ public class DataInitializationService {
                 hrManager.setPosition(hrManagerPosition);
                 hrManager.setDepartment(hrDept);
                 hrManager.setStatus(activeStatus);
+                hrManager.setHireDate(LocalDateTime.now());
+                hrManager.setSalary(new java.math.BigDecimal("8000.00"));
                 session.persist(hrManager);
 
                 transaction.commit();

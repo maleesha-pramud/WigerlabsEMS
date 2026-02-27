@@ -24,6 +24,8 @@ const modalTitle       = document.getElementById('modal-title');
 const inputName        = document.getElementById('input-emp-name');
 const inputEmail       = document.getElementById('input-emp-email');
 const inputPassword    = document.getElementById('input-emp-password');
+const inputHireDate    = document.getElementById('input-emp-hire-date');
+const inputSalary      = document.getElementById('input-emp-salary');
 const emailField       = document.getElementById('email-field');
 const passwordField    = document.getElementById('password-field');
 const selectDept       = document.getElementById('select-department');
@@ -102,6 +104,8 @@ async function openAddModal() {
     inputName.value     = '';
     inputEmail.value    = '';
     inputPassword.value = '';
+    inputHireDate.value = '';
+    inputSalary.value   = '';
     selectStatus.value  = '1';
     hideError();
 
@@ -133,6 +137,8 @@ async function openEditModal(employee) {
     inputName.value        = user.name || '';
     inputEmail.value       = user.email || '';
     inputPassword.value    = '';
+    inputHireDate.value    = user.hireDate || '';
+    inputSalary.value      = user.salary || '';
     selectDept.value       = String(user.departmentId);
     selectPos.value        = String(user.positionId);
     selectStatus.value     = String(user.statusId);
@@ -197,6 +203,8 @@ async function fetchAndRenderUser(userId) {
                 <div><strong>Department:</strong> ${escapeHtml(user.departmentName)}</div>
                 <div><strong>Position:</strong> ${escapeHtml(user.positionName)}</div>
                 <div><strong>Status:</strong> ${statusBadge(user.statusValue)}</div>
+                <div><strong>Hire Date:</strong> ${user.hireDate ? escapeHtml(user.hireDate) : '—'}</div>
+                <div><strong>Salary:</strong> ${user.salary ? escapeHtml(user.salary) : '—'}</div>
             </div>
         `;
     } else {
@@ -241,7 +249,7 @@ function renderRows(employees) {
     if (!employees || employees.length === 0) {
         tbody.innerHTML = `
             <tr>
-                <td colspan="6" class="px-6 py-10 text-center text-sm text-slate-400 dark:text-slate-500">
+                <td colspan="8" class="px-6 py-10 text-center text-sm text-slate-400 dark:text-slate-500">
                     No employees found. Click <strong>Add Employee</strong> to create one.
                 </td>
             </tr>`;
@@ -262,6 +270,8 @@ function renderRows(employees) {
             <td class="px-6 py-4 whitespace-nowrap text-slate-700 dark:text-slate-300">${escapeHtml(emp.departmentName)}</td>
             <td class="px-6 py-4 whitespace-nowrap text-slate-700 dark:text-slate-300">${escapeHtml(emp.positionName)}</td>
             <td class="px-6 py-4 whitespace-nowrap">${statusBadge(emp.statusValue)}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-slate-700 dark:text-slate-300">${emp.hireDate ? escapeHtml(emp.hireDate) : '—'}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-slate-700 dark:text-slate-300">${emp.salary ? escapeHtml(emp.salary) : '—'}</td>
             <td class="px-6 py-4 text-right">
                 <div class="inline-flex items-center space-x-1">
                     <button class="btn-view p-1.5 rounded-lg text-slate-400 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
@@ -269,7 +279,7 @@ function renderRows(employees) {
                         <span class="material-symbols-outlined text-lg pointer-events-none">visibility</span>
                     </button>
                     <button class="btn-edit p-1.5 rounded-lg text-slate-400 hover:text-primary hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors"
-                            data-employee='${JSON.stringify({ id: emp.id, name: emp.name, departmentId: emp.departmentId, positionId: emp.positionId, statusId: emp.statusId })}'
+                            data-employee='${JSON.stringify({ id: emp.id, name: emp.name, departmentId: emp.departmentId, positionId: emp.positionId, statusId: emp.statusId, hireDate: emp.hireDate, salary: emp.salary })}'
                             title="Edit">
                         <span class="material-symbols-outlined text-lg pointer-events-none">edit</span>
                     </button>
@@ -313,12 +323,16 @@ async function handleSubmit() {
     const deptId     = parseInt(selectDept.value);
     const posId      = parseInt(selectPos.value);
     const statusId   = parseInt(selectStatus.value);
+    const hireDate   = inputHireDate.value;
+    const salary     = inputSalary.value;
 
     // Validation
     if (!name)       { showError('Full name is required.'); return; }
     if (!email)      { showError('Email is required.'); return; }
     if (!deptId)     { showError('Please select a department.'); return; }
     if (!posId)      { showError('Please select a position.'); return; }
+    if (!hireDate)   { showError('Hire date is required.'); return; }
+    if (!salary || isNaN(Number(salary)) || Number(salary) < 0) { showError('Valid salary is required.'); return; }
 
     let res;
 
@@ -331,6 +345,8 @@ async function handleSubmit() {
             departmentId: deptId,
             positionId: posId,
             statusId,
+            hireDate,
+            salary,
         });
     } else {
         // Edit mode
@@ -343,6 +359,8 @@ async function handleSubmit() {
             departmentId: deptId,
             positionId: posId,
             statusId,
+            hireDate,
+            salary,
         });
     }
 

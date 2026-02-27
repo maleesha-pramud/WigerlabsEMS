@@ -2,6 +2,8 @@ package com.wigerlabs.wigerlabs_ems.entity;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table
 public class User extends BaseEntity {
@@ -33,6 +35,12 @@ public class User extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "status_id", nullable = false)
     private Status status;
+
+    @Column(name = "hire_date")
+    private LocalDateTime hireDate;
+
+    @Column(name = "salary")
+    private java.math.BigDecimal salary;
 
     public User() {
     }
@@ -108,5 +116,21 @@ public class User extends BaseEntity {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public LocalDateTime getHireDate() {
+        return hireDate;
+    }
+
+    public void setHireDate(LocalDateTime hireDate) {
+        this.hireDate = hireDate;
+    }
+
+    public java.math.BigDecimal getSalary() {
+        return salary;
+    }
+
+    public void setSalary(java.math.BigDecimal salary) {
+        this.salary = salary;
     }
 }

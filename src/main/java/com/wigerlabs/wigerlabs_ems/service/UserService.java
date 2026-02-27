@@ -54,6 +54,8 @@ public class UserService {
                     user.setPosition(position);
                     user.setDepartment(department);
                     user.setStatus(statusEntity);
+                    user.setHireDate(userDTO.getHireDate());
+                    user.setSalary(userDTO.getSalary());
 
                     session.persist(user);
                     transaction.commit();
@@ -100,6 +102,8 @@ public class UserService {
                 userObject.addProperty("departmentName", user.getDepartment().getName());
                 userObject.addProperty("statusId", user.getStatus().getId());
                 userObject.addProperty("statusValue", user.getStatus().getValue());
+                userObject.addProperty("hireDate", user.getHireDate() != null ? user.getHireDate().toString() : null);
+                userObject.addProperty("salary", user.getSalary() != null ? user.getSalary().toString() : null);
                 usersArray.add(userObject);
             }
 
@@ -137,6 +141,8 @@ public class UserService {
                 userObject.addProperty("departmentName", user.getDepartment().getName());
                 userObject.addProperty("statusId", user.getStatus().getId());
                 userObject.addProperty("statusValue", user.getStatus().getValue());
+                userObject.addProperty("hireDate", user.getHireDate() != null ? user.getHireDate().toString() : null);
+                userObject.addProperty("salary", user.getSalary() != null ? user.getSalary().toString() : null);
 
                 status = true;
                 message = "User retrieved successfully";
@@ -193,6 +199,8 @@ public class UserService {
                     user.setPosition(position);
                     user.setDepartment(department);
                     user.setStatus(statusEntity);
+                    user.setHireDate(userDTO.getHireDate());
+                    user.setSalary(userDTO.getSalary());
 
                     session.merge(user);
                     transaction.commit();
@@ -388,6 +396,8 @@ public class UserService {
                 userObject.addProperty("statusId", user.getStatus().getId());
                 userObject.addProperty("statusValue", user.getStatus().getValue());
                 userObject.addProperty("email", user.getEmail());
+                userObject.addProperty("hireDate", user.getHireDate() != null ? user.getHireDate().toString() : null);
+                userObject.addProperty("salary", user.getSalary() != null ? user.getSalary().toString() : null);
                 usersArray.add(userObject);
             }
             status = true;

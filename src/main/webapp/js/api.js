@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Base URL for API - Use 10.0.2.2 to access localhost from Android emulator
-const BASE_URL = 'http://10.0.2.2:8080/TideTempo/api';
+const BASE_URL = 'http://10.0.2.2:8080/wigerlabs_ems/api';
 
 // Create axios instance
 const api = axios.create({

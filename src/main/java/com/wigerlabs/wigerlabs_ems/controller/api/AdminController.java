@@ -78,4 +78,12 @@ public class AdminController {
         String responseJson = userService.searchAdmins(query);
         return Response.ok().entity(responseJson).build();
     }
+
+    @GET
+    @Path("/users/status/{statusId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAdminsByStatus(@PathParam("statusId") int statusId) {
+        String responseJson = userService.getUsersByRoleAndStatus(ADMIN_ROLE_ID, statusId);
+        return Response.ok().entity(responseJson).build();
+    }
 }

@@ -78,4 +78,12 @@ public class ManagerController {
         String responseJson = userService.searchManagers(query);
         return Response.ok().entity(responseJson).build();
     }
+
+    @GET
+    @Path("/users/status/{statusId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getManagersByStatus(@PathParam("statusId") int statusId) {
+        String responseJson = userService.getUsersByRoleAndStatus(MANAGER_ROLE_ID, statusId);
+        return Response.ok().entity(responseJson).build();
+    }
 }

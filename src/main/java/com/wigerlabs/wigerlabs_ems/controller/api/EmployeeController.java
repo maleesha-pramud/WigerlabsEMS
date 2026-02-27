@@ -78,4 +78,12 @@ public class EmployeeController {
         String responseJson = userService.searchEmployees(query);
         return Response.ok().entity(responseJson).build();
     }
+
+    @GET
+    @Path("/users/status/{statusId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getEmployeesByStatus(@PathParam("statusId") int statusId) {
+        String responseJson = userService.getUsersByRoleAndStatus(EMPLOYEE_ROLE_ID, statusId);
+        return Response.ok().entity(responseJson).build();
+    }
 }

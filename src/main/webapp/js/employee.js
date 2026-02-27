@@ -467,6 +467,24 @@ tbody.addEventListener('change', (e) => {
     }
 });
 
+const filterStatus = document.getElementById('filter-employee-status');
+
+filterStatus.addEventListener('change', async () => {
+    const statusId = filterStatus.value;
+    if (statusId) {
+        renderLoadingRow();
+        const res = await get(API_ENDPOINTS.GET_EMPLOYEES_BY_STATUS(statusId));
+        if (res.success && res.data.status) {
+            renderRows(res.data.data);
+        } else {
+            tbody.innerHTML = `<tr><td colspan="8" class="px-6 py-10 text-center text-sm text-red-500">${res.data?.message || res.error || 'Failed to filter employees.'}</td></tr>`;
+            toast.show(res.data?.message || res.error || 'Failed to filter employees.', 'error');
+        }
+    } else {
+        loadEmployees();
+    }
+});
+
 const headerSearch = document.querySelector('app-header');
 if (headerSearch) {
     headerSearch.addEventListener('search', async (e) => {

@@ -412,4 +412,42 @@ public class UserService {
         responseObject.add("data", usersArray);
         return responseObject.toString();
     }
+
+    public String getUsersByRoleAndStatus(int roleId, int statusId) {
+        JsonObject responseObject = new JsonObject();
+        boolean status = false;
+        String message = "";
+        JsonArray usersArray = new JsonArray();
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            List<User> users = session.createQuery(
+                "FROM User u WHERE u.userRole.id = :roleId AND u.status.id = :statusId ORDER BY u.name", User.class)
+                .setParameter("roleId", roleId)
+                .setParameter("statusId", statusId)
+                .getResultList();
+            for (User user : users) {
+                JsonObject userObject = new JsonObject();
+                userObject.addProperty("id", user.getId());
+                userObject.addProperty("name", user.getName());
+                userObject.addProperty("userRoleId", user.getUserRole().getId());
+                userObject.addProperty("userRoleName", user.getUserRole().getName());
+                userObject.addProperty("positionId", user.getPosition().getId());
+                userObject.addProperty("positionName", user.getPosition().getName());
+                userObject.addProperty("departmentId", user.getDepartment().getId());
+                userObject.addProperty("departmentName", user.getDepartment().getName());
+                userObject.addProperty("statusId", user.getStatus().getId());
+                userObject.addProperty("statusValue", user.getStatus().getValue());
+                userObject.addProperty("hireDate", user.getHireDate() != null ? user.getHireDate().toString() : null);
+                userObject.addProperty("salary", user.getSalary() != null ? user.getSalary().toString() : null);
+                usersArray.add(userObject);
+            }
+            status = true;
+            message = "Users retrieved successfully";
+        } catch (Exception e) {
+            message = "Error retrieving users: " + e.getMessage();
+        }
+        responseObject.addProperty("status", status);
+        responseObject.addProperty("message", message);
+        responseObject.add("data", usersArray);
+        return responseObject.toString();
+    }
 }

@@ -32,6 +32,8 @@ const btnSubmitModal = document.getElementById('btn-submit-modal');
 const btnSubmitLabel = document.getElementById('btn-submit-label');
 const btnSubmitSpinner = document.getElementById('btn-submit-spinner');
 
+const filterStatus = document.getElementById('filter-manager-status');
+
 let editingId = null;
 
 function escapeHtml(str) {
@@ -455,6 +457,21 @@ if (headerSearch) {
         }
     });
 }
+filterStatus.addEventListener('change', async () => {
+    const statusId = filterStatus.value;
+    if (statusId) {
+        renderLoadingRow();
+        const res = await get(API_ENDPOINTS.GET_MANAGERS_BY_STATUS(statusId));
+        if (res.success && res.data.status) {
+            renderRows(res.data.data);
+        } else {
+            tbody.innerHTML = `<tr><td colspan="8" class="px-6 py-10 text-center text-sm text-red-500">${res.data?.message || res.error || 'Failed to filter managers.'}</td></tr>`;
+            toast.show(res.data?.message || res.error || 'Failed to filter managers.', 'error');
+        }
+    } else {
+        loadManagers();
+    }
+});
 loadManagers();
 
 function formatDate(dateStr) {

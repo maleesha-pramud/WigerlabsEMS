@@ -24,34 +24,7 @@
 <body class="bg-sidebar text-slate-800 dark:text-slate-200 h-screen overflow-hidden flex font-body transition-colors duration-200">
 <app-sidebar></app-sidebar>
 <main class="flex-1 flex flex-col h-[calc(100%-16px)] my-2 mr-2 rounded-r-none overflow-hidden bg-background-light dark:bg-background-dark shadow-2xl ring-1 ring-black/5 relative rounded-l-2xl md:rounded-2xl">
-    <header class="h-20 px-8 flex items-center justify-between border-b border-gray-100 dark:border-slate-800 bg-background-light dark:bg-background-dark">
-        <div class="w-96">
-            <div class="relative">
-                <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
-                <span class="material-symbols-outlined text-[20px]">search</span>
-                </span>
-                <input class="w-full py-2 pl-10 pr-4 bg-transparent border-none text-sm text-slate-600 dark:text-slate-300 focus:ring-0 placeholder-slate-400" placeholder="Search positions..." type="text"/>
-            </div>
-        </div>
-        <div class="flex items-center space-x-6">
-            <button class="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200">
-                <span class="material-symbols-outlined">chat_bubble_outline</span>
-            </button>
-            <button class="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 relative">
-                <span class="material-symbols-outlined">notifications_none</span>
-                <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
-            </button>
-            <div class="flex items-center space-x-3 pl-4 border-l border-slate-200 dark:border-slate-700">
-                <img alt="Admin Profile"
-                     class="w-10 h-10 rounded-full object-cover ring-2 ring-white dark:ring-slate-700"
-                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8vUCliFpJlQ7cVFiz-NFl6pjpXhtM_qZKzBdJLPbfewroAdYp1VAtp-T2mKqmKsh3ZU1IDKbBcymxRfTAgxAsXpNe17BQe3SfSghtMjV4JxQbKUgD7SLztmqoXSwx3QWUDtbzGsP_Uj18hE3evMUac8dqNUspnz2PuhpjwdpqYP5oKzDRDVTgutiov4VYojUThKnhEth65lapL6sW7eR4C3U7VH0vd1EKIWAtYcRGKKbLLIBHHaTa9xC9uGZZ_8ATsw-qZyYGMA"/>
-                <div>
-                    <p class="text-sm font-semibold text-slate-800 dark:text-white">Riyad A</p>
-                    <p class="text-xs text-slate-500 dark:text-slate-400">Admin</p>
-                </div>
-            </div>
-        </div>
-    </header>
+    <app-header placeholder="Search positions..."></app-header>
     <div class="flex-1 overflow-y-auto p-8">
         <div class="flex flex-col md:flex-row md:items-center justify-between mb-8">
             <div>
@@ -161,8 +134,9 @@
     </button>
 </div>
 
-<!-- Sidebar Web Component -->
+<!-- Sidebar & Header Web Components -->
 <script type="module" src="js/components/AppSidebar.js"></script>
+<script type="module" src="js/components/AppHeader.js"></script>
 
 <!-- Theme Toggle Script -->
 <script src="js/theme.js"></script>

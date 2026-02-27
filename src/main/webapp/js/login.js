@@ -1,9 +1,10 @@
 /**
  * login.js
  * Handles login page logic: session check, form validation, API call, redirect.
- * Depends on: api.js, ToastNotification.js
+ * Depends on: api.js, ToastNotification.js, UserStore
  */
 import { get, post, API_ENDPOINTS } from './api.js';
+import UserStore from './utils/user_store.js';
 
 // Wait for the custom element to be defined and upgraded before running
 await customElements.whenDefined('toast-notification');
@@ -23,11 +24,17 @@ const togglePassword = document.getElementById('toggle-password');
 const toggleIcon     = document.getElementById('toggle-password-icon');
 const toast          = document.getElementById('toast');
 
-// Session check on load
+// Session check on load — use local store first for instant redirect, then verify with server
 (async () => {
-    const res = await get(API_ENDPOINTS.CHECK_SESSION);
-    if (res.success && res.data.authenticated) {
-        window.location.href = 'dashboard.html';
+    if (UserStore.isLoggedIn()) {
+        // Quick local check passed — verify the server session is still alive
+        const res = await get(API_ENDPOINTS.CHECK_SESSION);
+        if (res.success && res.data.authenticated) {
+            window.location.href = 'dashboard.html';
+        } else {
+            // Server session expired — clear stale local data
+            UserStore.clear();
+        }
     }
 })();
 
@@ -113,6 +120,17 @@ form.addEventListener('submit', async (e) => {
 
     // HTTP 200 with status: true  →  success
     if (res.success && res.data.status) {
+        // Persist user data locally
+        UserStore.save({
+            userId:         res.data.data.userId,
+            userName:       res.data.data.userName,
+            userEmail:      res.data.data.userEmail,
+            userRole:       res.data.data.userRole,
+            departmentName: res.data.data.departmentName,
+            positionName:   res.data.data.positionName,
+            sessionId:      res.data.data.sessionId,
+        });
+
         toast.show(`Welcome back, ${res.data.data.userName}!`, 'success', 1500);
         setTimeout(() => { window.location.href = 'dashboard.html'; }, 1500);
     } else {
@@ -123,6 +141,4 @@ form.addEventListener('submit', async (e) => {
         toast.show(msg, 'error');
     }
 });
-
-
 

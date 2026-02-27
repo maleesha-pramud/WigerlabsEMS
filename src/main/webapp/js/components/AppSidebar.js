@@ -8,6 +8,7 @@
  * Dynamically loads the department list from the API.
  */
 import { get, post, API_ENDPOINTS } from '../api.js';
+import UserStore from '../utils/user_store.js';
 
 const NAV_ITEMS = [
     { href: 'dashboard.html',  icon: 'grid_view',  label: 'Dashboard'   },
@@ -24,6 +25,12 @@ const DEPT_COLORS = [
 
 class AppSidebar extends HTMLElement {
     connectedCallback() {
+        // Instant local auth guard — redirect to login if no user in store
+        if (!UserStore.isLoggedIn()) {
+            window.location.href = 'login.html';
+            return;
+        }
+
         this._render([]);          // render immediately with empty dept list
         this._setActiveLink();
         this._loadDepartments();
@@ -133,13 +140,13 @@ class AppSidebar extends HTMLElement {
 
     // ── Logout ─────────────────────────────────────────────────────────────────
     _bindLogout() {
-        // Use event delegation so it works after re-renders
         this.addEventListener('click', async (e) => {
             if (e.target.closest('#sidebar-logout-btn')) {
-                const res = await post(API_ENDPOINTS.LOGOUT, {});
-                if (res.success || res.data?.status) {
-                    window.location.href = 'login.html';
-                }
+                // Clear local store immediately for instant UX
+                UserStore.clear();
+                // Fire server-side session invalidation (don't block on result)
+                post(API_ENDPOINTS.LOGOUT, {}).catch(() => {});
+                window.location.href = 'login.html';
             }
         });
     }

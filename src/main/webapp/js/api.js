@@ -1,3 +1,5 @@
+import UserStore from './utils/user_store.js';
+
 // Base URL for API
 const BASE_URL = 'http://localhost:8080/wigerlabs_ems/api';
 
@@ -28,7 +30,8 @@ const request = async (url, options = {}) => {
 
         if (!response.ok) {
             if (response.status === 401 && !skipRedirectOn401) {
-                setTimeout(() => { window.location.href = 'login.html'; }, 1000);
+                UserStore.clear();
+                setTimeout(() => { window.location.href = '/login.html'; }, 1000);
             }
             return {
                 success: false,

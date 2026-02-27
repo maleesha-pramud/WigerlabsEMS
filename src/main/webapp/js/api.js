@@ -1,72 +1,75 @@
-import axios from 'axios';
-
-
+// Base URL for API
 const BASE_URL = 'http://localhost:8080/wigerlabs_ems/api';
 
-// Create axios instance
-const api = axios.create({
-    baseURL: BASE_URL,
-    timeout: 10000, // 10 seconds
-    headers: {
-        'Content-Type': 'application/json',
-    },
-    withCredentials: true, // Enable cookies and session
-});
+/**
+ * Helper to handle fetch requests with a timeout and consistent error handling
+ */
+const request = async (url, options = {}) => {
+    const { timeout = 10000, ...customOptions } = options;
+
+    // Set up timeout controller
+    const controller = new AbortController();
+    const id = setTimeout(() => controller.abort(), timeout);
+
+    const config = {
+        ...customOptions,
+        signal: controller.signal,
+        headers: {
+            'Content-Type': 'application/json',
+            ...customOptions.headers,
+        },
+    };
+
+    try {
+        const response = await fetch(`${BASE_URL}${url}`, config);
+        clearTimeout(id);
+
+        const data = await response.json().catch(() => ({})); // Handle empty responses
+
+        if (!response.ok) {
+            return {
+                success: false,
+                error: data.message || `Error: ${response.status} ${response.statusText}`
+            };
+        }
+
+        return { success: true, data };
+    } catch (error) {
+        clearTimeout(id);
+        console.error(`${options.method || 'GET'} request error:`, error);
+
+        let errorMessage = error.message;
+        if (error.name === 'AbortError') errorMessage = 'Request timed out';
+
+        return { success: false, error: errorMessage };
+    }
+};
 
 // GET request
-export const get = async (url, params) => {
-    try {
-        const response = await api.get(url, { params });
-        return { success: true, data: response.data };
-    } catch (error) {
-        console.error('GET request error:', error);
-        return {
-            success: false,
-            error: error.response?.data?.message || error.message
-        };
-    }
+export const get = (url, params) => {
+    const queryString = params ? '?' + new URLSearchParams(params).toString() : '';
+    return request(`${url}${queryString}`, { method: 'GET' });
 };
 
 // POST request
-export const post = async (url, data) => {
-    try {
-        const response = await api.post(url, data);
-        return { success: true, data: response.data };
-    } catch (error) {
-        console.error('POST request error:', error);
-        return {
-            success: false,
-            error: error.response?.data?.message || error.message
-        };
-    }
+export const post = (url, data) => {
+    return request(url, {
+        method: 'POST',
+        body: JSON.stringify(data),
+    });
 };
 
 // PUT request
-export const put = async (url, data) => {
-    try {
-        const response = await api.put(url, data);
-        return { success: true, data: response.data };
-    } catch (error) {
-        console.error('PUT request error:', error);
-        return {
-            success: false,
-            error: error.response?.data?.message || error.message
-        };
-    }
+export const put = (url, data) => {
+    return request(url, {
+        method: 'PUT',
+        body: JSON.stringify(data),
+    });
 };
 
 // DELETE request
-export const del = async (url) => {
-    try {
-        const response = await api.delete(url);
-        return { success: true, data: response.data };
-    } catch (error) {
-        console.error('DELETE request error:', error);
-        return {
-            success: false,
-            error: error.response?.data?.message || error.message
-        };
-    }
+export const del = (url) => {
+    return request(url, { method: 'DELETE' });
 };
 
 // API endpoints
@@ -111,5 +114,3 @@ export const API_ENDPOINTS = {
     UPDATE_POSITION: '/position',
     DELETE_POSITION: (id) => `/position/${id}`,
 };
-
-export default api;

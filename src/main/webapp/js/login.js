@@ -8,7 +8,7 @@ import { get, post, API_ENDPOINTS } from './api.js';
 // Wait for the custom element to be defined and upgraded before running
 await customElements.whenDefined('toast-notification');
 
-// ── DOM refs ──────────────────────────────────────────────────────────────────
+// DOM refs
 const form           = document.getElementById('login-form');
 const inputEmail     = document.getElementById('input-email');
 const inputPassword  = document.getElementById('input-password');
@@ -23,7 +23,7 @@ const togglePassword = document.getElementById('toggle-password');
 const toggleIcon     = document.getElementById('toggle-password-icon');
 const toast          = document.getElementById('toast');
 
-// ── Session check on load ─────────────────────────────────────────────────────
+// Session check on load
 (async () => {
     const res = await get(API_ENDPOINTS.CHECK_SESSION);
     if (res.success && res.data.authenticated) {
@@ -31,14 +31,14 @@ const toast          = document.getElementById('toast');
     }
 })();
 
-// ── Password visibility toggle ────────────────────────────────────────────────
+// Password visibility toggle
 togglePassword.addEventListener('click', () => {
     const isText = inputPassword.type === 'text';
     inputPassword.type      = isText ? 'password' : 'text';
     toggleIcon.textContent  = isText ? 'visibility' : 'visibility_off';
 });
 
-// ── Validation helpers ────────────────────────────────────────────────────────
+// Validation helpers
 function showFieldError(el, msg) {
     el.textContent = msg;
     el.classList.remove('hidden');
@@ -93,11 +93,11 @@ function validate() {
     return valid;
 }
 
-// ── Clear errors on input ─────────────────────────────────────────────────────
+// Clear errors on input
 inputEmail.addEventListener('input', () => clearFieldError(emailError));
 inputPassword.addEventListener('input', () => clearFieldError(passwordError));
 
-// ── Form submit ───────────────────────────────────────────────────────────────
+// Form submit
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (!validate()) return;

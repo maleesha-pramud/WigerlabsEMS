@@ -31,7 +31,7 @@ const toast          = document.getElementById('toast');
         // Quick local check passed — verify the server session is still alive
         const res = await get(API_ENDPOINTS.CHECK_SESSION);
         if (res.success && res.data.authenticated) {
-            window.location.href = 'dashboard.html';
+            window.location.href = 'employee.html';
         } else {
             // Server session expired — clear stale local data
             UserStore.clear();
@@ -133,7 +133,7 @@ form.addEventListener('submit', async (e) => {
         });
 
         toast.show(`Welcome back, ${res.data.data.userName}!`, 'success', 1500);
-        setTimeout(() => { window.location.href = 'dashboard.html'; }, 1500);
+        setTimeout(() => { window.location.href = 'employee.html'; }, 1500);
     } else {
         // HTTP 401 lands in res.success = false; message is in res.error
         // HTTP 200 with status: false lands in res.data.message

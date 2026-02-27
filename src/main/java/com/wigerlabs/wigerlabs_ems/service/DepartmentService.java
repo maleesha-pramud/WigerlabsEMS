@@ -189,4 +189,36 @@ public class DepartmentService {
         responseObject.addProperty("message", message);
         return responseObject.toString();
     }
+
+    public String searchDepartments(String query) {
+        com.google.gson.JsonObject responseObject = new com.google.gson.JsonObject();
+        boolean status = false;
+        String message = "";
+        com.google.gson.JsonArray departmentsArray = new com.google.gson.JsonArray();
+        try (org.hibernate.Session session = com.wigerlabs.wigerlabs_ems.util.HibernateUtil.getSessionFactory().openSession()) {
+            String hql = "FROM Department d";
+            if (query != null && !query.trim().isEmpty()) {
+                hql += " WHERE lower(d.name) LIKE :q";
+            }
+            var q = session.createQuery(hql, com.wigerlabs.wigerlabs_ems.entity.Department.class);
+            if (query != null && !query.trim().isEmpty()) {
+                q.setParameter("q", "%" + query.trim().toLowerCase() + "%");
+            }
+            java.util.List<com.wigerlabs.wigerlabs_ems.entity.Department> departments = q.getResultList();
+            for (com.wigerlabs.wigerlabs_ems.entity.Department department : departments) {
+                com.google.gson.JsonObject departmentObject = new com.google.gson.JsonObject();
+                departmentObject.addProperty("id", department.getId());
+                departmentObject.addProperty("name", department.getName());
+                departmentsArray.add(departmentObject);
+            }
+            status = true;
+            message = "Search successful";
+        } catch (Exception e) {
+            message = "Error searching departments: " + e.getMessage();
+        }
+        responseObject.addProperty("status", status);
+        responseObject.addProperty("message", message);
+        responseObject.add("data", departmentsArray);
+        return responseObject.toString();
+    }
 }

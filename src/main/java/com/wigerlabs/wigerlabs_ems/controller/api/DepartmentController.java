@@ -55,4 +55,12 @@ public class DepartmentController {
         String responseJson = departmentService.deleteDepartment(id);
         return Response.ok().entity(responseJson).build();
     }
+
+    @GET
+    @Path("/search")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response searchDepartments(@QueryParam("q") String query) {
+        String responseJson = departmentService.searchDepartments(query);
+        return Response.ok().entity(responseJson).build();
+    }
 }

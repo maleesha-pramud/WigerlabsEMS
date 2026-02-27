@@ -189,4 +189,36 @@ public class PositionService {
         responseObject.addProperty("message", message);
         return responseObject.toString();
     }
+
+    public String searchPositions(String query) {
+        com.google.gson.JsonObject responseObject = new com.google.gson.JsonObject();
+        boolean status = false;
+        String message = "";
+        com.google.gson.JsonArray positionsArray = new com.google.gson.JsonArray();
+        try (org.hibernate.Session session = com.wigerlabs.wigerlabs_ems.util.HibernateUtil.getSessionFactory().openSession()) {
+            String hql = "FROM Position p";
+            if (query != null && !query.trim().isEmpty()) {
+                hql += " WHERE lower(p.name) LIKE :q";
+            }
+            var q = session.createQuery(hql, com.wigerlabs.wigerlabs_ems.entity.Position.class);
+            if (query != null && !query.trim().isEmpty()) {
+                q.setParameter("q", "%" + query.trim().toLowerCase() + "%");
+            }
+            java.util.List<com.wigerlabs.wigerlabs_ems.entity.Position> positions = q.getResultList();
+            for (com.wigerlabs.wigerlabs_ems.entity.Position position : positions) {
+                com.google.gson.JsonObject positionObject = new com.google.gson.JsonObject();
+                positionObject.addProperty("id", position.getId());
+                positionObject.addProperty("name", position.getName());
+                positionsArray.add(positionObject);
+            }
+            status = true;
+            message = "Search successful";
+        } catch (Exception e) {
+            message = "Error searching positions: " + e.getMessage();
+        }
+        responseObject.addProperty("status", status);
+        responseObject.addProperty("message", message);
+        responseObject.add("data", positionsArray);
+        return responseObject.toString();
+    }
 }

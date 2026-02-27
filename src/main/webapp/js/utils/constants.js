@@ -41,6 +41,7 @@ export const API_ENDPOINTS = {
     GET_DEPARTMENT_BY_ID: (id) => `/department/${id}`,
     UPDATE_DEPARTMENT: '/department',
     DELETE_DEPARTMENT: (id) => `/department/${id}`,
+    SEARCH_DEPARTMENT: (q) => `/department/search?q=${encodeURIComponent(q)}`,
 
     // Position
     ADD_POSITION: '/position',
@@ -48,6 +49,7 @@ export const API_ENDPOINTS = {
     GET_POSITION_BY_ID: (id) => `/position/${id}`,
     UPDATE_POSITION: '/position',
     DELETE_POSITION: (id) => `/position/${id}`,
+    SEARCH_POSITION: (q) => `/position/search?q=${encodeURIComponent(q)}`,
 
     // Status Change
     CHANGE_EMPLOYEE_STATUS: (id) => `/employee/${id}/status`,

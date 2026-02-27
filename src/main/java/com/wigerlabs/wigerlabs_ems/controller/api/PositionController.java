@@ -54,4 +54,12 @@ public class PositionController {
         String responseJson = positionService.deletePosition(id);
         return Response.ok().entity(responseJson).build();
     }
+
+    @GET
+    @Path("/search")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response searchPositions(@QueryParam("q") String query) {
+        String responseJson = positionService.searchPositions(query);
+        return Response.ok().entity(responseJson).build();
+    }
 }

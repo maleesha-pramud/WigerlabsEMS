@@ -1,5 +1,6 @@
 package com.wigerlabs.wigerlabs_ems.controller.api;
 
+import com.google.gson.JsonObject;
 import com.wigerlabs.wigerlabs_ems.dto.UserDTO;
 import com.wigerlabs.wigerlabs_ems.filter.RoleAllowed;
 import com.wigerlabs.wigerlabs_ems.service.UserService;
@@ -7,6 +8,8 @@ import com.wigerlabs.wigerlabs_ems.util.AppUtil;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+
+import java.util.Map;
 
 @Path("/manager")
 @RoleAllowed({"admin", "manager"})
@@ -55,6 +58,16 @@ public class ManagerController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteManager(@PathParam("id") int id) {
         String responseJson = userService.deleteUser(id, MANAGER_ROLE_ID);
+        return Response.ok().entity(responseJson).build();
+    }
+
+    @PUT
+    @Path("/{id}/status")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response changeManagerStatus(@PathParam("id") int id, String jsonData) {
+        JsonObject jsonObject = AppUtil.GSON.fromJson(jsonData, JsonObject.class);
+        String responseJson = userService.changeManagerStatus(id, jsonObject.get("statusId").getAsInt());
         return Response.ok().entity(responseJson).build();
     }
 }

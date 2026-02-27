@@ -45,5 +45,9 @@ export const API_ENDPOINTS = {
     GET_POSITION_BY_ID: (id) => `/position/${id}`,
     UPDATE_POSITION: '/position',
     DELETE_POSITION: (id) => `/position/${id}`,
-};
 
+    // Status Change
+    CHANGE_EMPLOYEE_STATUS: (id) => `/employee/${id}/status`,
+    CHANGE_ADMIN_STATUS: (id) => `/admin/${id}/status`,
+    CHANGE_MANAGER_STATUS: (id) => `/manager/${id}/status`,
+};

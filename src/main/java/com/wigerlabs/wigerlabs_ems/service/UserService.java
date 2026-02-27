@@ -250,4 +250,102 @@ public class UserService {
         responseObject.addProperty("message", message);
         return responseObject.toString();
     }
+
+    public String changeAdminStatus(int userId, int statusId) {
+        JsonObject responseObject = new JsonObject();
+        boolean status = false;
+        String message = "";
+
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Transaction transaction = session.beginTransaction();
+            User user = session.get(User.class, userId);
+            if (user == null) {
+                message = "Admin not found.";
+            } else if (user.getUserRole().getId() != 1) {
+                message = "User is not an admin.";
+            } else {
+                Status statusEntity = session.get(Status.class, statusId);
+                if (statusEntity == null) {
+                    message = "Invalid status.";
+                } else {
+                    user.setStatus(statusEntity);
+                    session.merge(user);
+                    transaction.commit();
+                    status = true;
+                    message = "Admin status updated successfully.";
+                }
+            }
+        } catch (Exception e) {
+            message = "Error updating admin status: " + e.getMessage();
+        }
+        responseObject.addProperty("status", status);
+        responseObject.addProperty("message", message);
+        return responseObject.toString();
+    }
+
+    public String changeManagerStatus(int userId, int statusId) {
+        JsonObject responseObject = new JsonObject();
+        boolean status = false;
+        String message = "";
+
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Transaction transaction = session.beginTransaction();
+            User user = session.get(User.class, userId);
+            if (user == null) {
+                message = "Manager not found.";
+            } else if (user.getUserRole().getId() != 2) {
+                message = "User is not a manager.";
+            } else {
+                Status statusEntity = session.get(Status.class, statusId);
+                if (statusEntity == null) {
+                    message = "Invalid status.";
+                } else {
+                    user.setStatus(statusEntity);
+                    session.merge(user);
+                    transaction.commit();
+                    status = true;
+                    message = "Manager status updated successfully.";
+                }
+            }
+        } catch (Exception e) {
+            message = "Error updating manager status: " + e.getMessage();
+        }
+
+        responseObject.addProperty("status", status);
+        responseObject.addProperty("message", message);
+        return responseObject.toString();
+    }
+
+    public String changeEmployeeStatus(int userId, int statusId) {
+        JsonObject responseObject = new JsonObject();
+        boolean status = false;
+        String message = "";
+
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Transaction transaction = session.beginTransaction();
+            User user = session.get(User.class, userId);
+            if (user == null) {
+                message = "Employee not found.";
+            } else if (user.getUserRole().getId() != 3) {
+                message = "User is not an employee.";
+            } else {
+                Status statusEntity = session.get(Status.class, statusId);
+                if (statusEntity == null) {
+                    message = "Invalid status.";
+                } else {
+                    user.setStatus(statusEntity);
+                    session.merge(user);
+                    transaction.commit();
+                    status = true;
+                    message = "Employee status updated successfully.";
+                }
+            }
+        } catch (Exception e) {
+            message = "Error updating employee status: " + e.getMessage();
+        }
+
+        responseObject.addProperty("status", status);
+        responseObject.addProperty("message", message);
+        return responseObject.toString();
+    }
 }

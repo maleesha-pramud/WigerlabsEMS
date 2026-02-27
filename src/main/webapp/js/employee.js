@@ -207,13 +207,7 @@ async function fetchAndRenderUser(userId) {
 // Status Change
 async function changeStatus(employee, newStatusId) {
     setSubmitLoading(true);
-    const res = await put(API_ENDPOINTS.UPDATE_EMPLOYEE, {
-        id: employee.id,
-        name: employee.name,
-        departmentId: employee.departmentId,
-        positionId: employee.positionId,
-        statusId: newStatusId,
-    });
+    const res = await put(API_ENDPOINTS.CHANGE_EMPLOYEE_STATUS(employee.id), { statusId: newStatusId });
     setSubmitLoading(false);
     if (res.success && res.data.status) {
         toast.show('Status updated.', 'success');

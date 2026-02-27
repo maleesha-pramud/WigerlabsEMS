@@ -1,5 +1,4 @@
-// admin.js
-// Handles Admin CRUD for admin.html
+
 import {get, post, put, del} from './api.js';
 import {API_ENDPOINTS} from './utils/constants.js';
 

@@ -1,8 +1,4 @@
-/**
- * employee.js
- * Handles all Employee CRUD operations for employee.html.
- * Depends on: api.js, ConfirmModal.js, ToastNotification.js
- */
+
 import {get, post, put, del} from './api.js';
 import {API_ENDPOINTS} from './utils/constants.js';
 

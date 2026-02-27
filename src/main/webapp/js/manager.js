@@ -1,5 +1,4 @@
-// manager.js
-// Handles Manager CRUD for manager.html
+
 import {get, post, put, del} from './api.js';
 import {API_ENDPOINTS} from './utils/constants.js';
 

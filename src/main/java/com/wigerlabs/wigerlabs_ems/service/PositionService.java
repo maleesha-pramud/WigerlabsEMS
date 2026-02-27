@@ -39,7 +39,7 @@ public class PositionService {
                 responseObject.addProperty("positionId", position.getId());
             }
         } catch (Exception e) {
-            if(transaction != null) {
+            if (transaction != null) {
                 transaction.rollback();
             }
             message = "Error creating position: " + e.getMessage();
@@ -55,12 +55,12 @@ public class PositionService {
         JsonObject responseObject = new JsonObject();
         boolean status = false;
         String message = "";
+        JsonArray positionsArray = new JsonArray();
 
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             List<Position> positions = session.createQuery("FROM Position p ORDER BY p.name", Position.class)
                     .getResultList();
 
-            JsonArray positionsArray = new JsonArray();
             for (Position position : positions) {
                 JsonObject posObject = new JsonObject();
                 posObject.addProperty("id", position.getId());
@@ -70,7 +70,6 @@ public class PositionService {
 
             status = true;
             message = "Positions retrieved successfully";
-            responseObject.add("positions", positionsArray);
         } catch (Exception e) {
             message = "Error retrieving positions: " + e.getMessage();
             e.printStackTrace();
@@ -78,6 +77,7 @@ public class PositionService {
 
         responseObject.addProperty("status", status);
         responseObject.addProperty("message", message);
+        responseObject.add("data", positionsArray);
         return responseObject.toString();
     }
 

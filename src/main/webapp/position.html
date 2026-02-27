@@ -32,7 +32,7 @@
                 <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Manage all job positions in the system.</p>
             </div>
             <div class="mt-4 md:mt-0">
-                <button class="bg-sidebar hover:bg-opacity-90 text-white px-5 py-2.5 rounded-lg flex items-center space-x-2 text-sm font-medium transition-all shadow-lg shadow-slate-300/50 dark:shadow-none">
+                <button id="btn-open-add" class="bg-sidebar hover:bg-opacity-90 text-white px-5 py-2.5 rounded-lg flex items-center space-x-2 text-sm font-medium transition-all shadow-lg shadow-slate-300/50 dark:shadow-none">
                     <span class="material-symbols-outlined text-[18px]">add</span>
                     <span>Add Position</span>
                 </button>
@@ -45,59 +45,13 @@
                 <table class="w-full text-left text-sm">
                     <thead class="bg-gray-50 dark:bg-slate-800 text-slate-500 dark:text-slate-400 uppercase text-xs font-semibold">
                     <tr>
+                        <th class="px-6 py-4">#</th>
                         <th class="px-6 py-4">Position Name</th>
-                        <th class="px-6 py-4">Employees</th>
-                        <th class="px-6 py-4">Date Created</th>
                         <th class="px-6 py-4 text-right">Actions</th>
                     </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-100 dark:divide-slate-700">
-                    <!-- Repeat for each position -->
-                    <tr class="hover:bg-gray-50 dark:hover:bg-slate-800/50 transition-colors">
-                        <td class="px-6 py-4 whitespace-nowrap font-semibold text-slate-800 dark:text-white">Software Engineer</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-slate-700 dark:text-slate-300">15</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-slate-700 dark:text-slate-300">2023-01-15</td>
-                        <td class="px-6 py-4 text-right">
-                            <div class="inline-flex items-center space-x-2">
-                                <button class="text-slate-400 hover:text-primary transition-colors">
-                                    <span class="material-symbols-outlined text-lg">edit</span>
-                                </button>
-                                <button class="text-slate-400 hover:text-red-500 transition-colors">
-                                    <span class="material-symbols-outlined text-lg">delete</span>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr class="hover:bg-gray-50 dark:hover:bg-slate-800/50 transition-colors">
-                        <td class="px-6 py-4 whitespace-nowrap font-semibold text-slate-800 dark:text-white">UI/UX Designer</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-slate-700 dark:text-slate-300">8</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-slate-700 dark:text-slate-300">2023-02-20</td>
-                        <td class="px-6 py-4 text-right">
-                            <div class="inline-flex items-center space-x-2">
-                                <button class="text-slate-400 hover:text-primary transition-colors">
-                                    <span class="material-symbols-outlined text-lg">edit</span>
-                                </button>
-                                <button class="text-slate-400 hover:text-red-500 transition-colors">
-                                    <span class="material-symbols-outlined text-lg">delete</span>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr class="hover:bg-gray-50 dark:hover:bg-slate-800/50 transition-colors">
-                        <td class="px-6 py-4 whitespace-nowrap font-semibold text-slate-800 dark:text-white">Graphic Designer</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-slate-700 dark:text-slate-300">5</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-slate-700 dark:text-slate-300">2023-03-10</td>
-                        <td class="px-6 py-4 text-right">
-                            <div class="inline-flex items-center space-x-2">
-                                <button class="text-slate-400 hover:text-primary transition-colors">
-                                    <span class="material-symbols-outlined text-lg">edit</span>
-                                </button>
-                                <button class="text-slate-400 hover:text-red-500 transition-colors">
-                                    <span class="material-symbols-outlined text-lg">delete</span>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
+                    <tbody id="position-tbody" class="divide-y divide-gray-100 dark:divide-slate-700">
+                    <!-- Populated by JavaScript -->
                     </tbody>
                 </table>
             </div>
@@ -114,9 +68,6 @@
                     </button>
                     <button class="w-8 h-8 flex items-center justify-center rounded-lg bg-black dark:bg-white text-white dark:text-black font-medium text-sm">
                         1
-                    </button>
-                    <button class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-500 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-700 hover:text-slate-800 dark:hover:text-slate-200 text-sm font-medium transition-colors">
-                        2
                     </button>
                     <button class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-700 hover:text-slate-600 dark:hover:text-slate-300 transition-colors">
                         <span class="material-symbols-outlined text-sm">chevron_right</span>
@@ -141,6 +92,47 @@
 <!-- Theme Toggle Script -->
 <script src="js/theme.js"></script>
 
+<!-- Web Components -->
+<script type="module" src="js/components/ConfirmModal.js"></script>
+<script type="module" src="js/components/ToastNotification.js"></script>
+
+<!-- Global component instances -->
+<confirm-modal id="confirm-modal"></confirm-modal>
+<toast-notification id="toast"></toast-notification>
+
+<!-- Add / Edit Position Modal -->
+<div id="pos-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+    <div class="bg-white dark:bg-surface-dark w-full max-w-md mx-4 rounded-2xl shadow-2xl ring-1 ring-black/5">
+        <div class="flex items-center justify-between px-6 py-5 border-b border-gray-100 dark:border-slate-700">
+            <h3 id="modal-title" class="text-lg font-semibold text-slate-900 dark:text-white">Add Position</h3>
+            <button id="btn-close-modal" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <div class="px-6 py-6 space-y-4">
+            <div>
+                <label for="input-pos-name" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Position Name</label>
+                <input id="input-pos-name" type="text" placeholder="e.g. Software Engineer"
+                       class="w-full px-4 py-2.5 rounded-lg border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-sm text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-primary placeholder-slate-400"/>
+                <p id="input-error" class="hidden mt-1.5 text-xs text-red-500"></p>
+            </div>
+        </div>
+        <div class="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-100 dark:border-slate-700">
+            <button id="btn-cancel-modal"
+                    class="px-4 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors">
+                Cancel
+            </button>
+            <button id="btn-submit-modal"
+                    class="px-5 py-2 rounded-lg text-sm font-medium text-white bg-sidebar hover:bg-opacity-90 transition-colors flex items-center gap-2">
+                <span id="btn-submit-label">Save</span>
+                <span id="btn-submit-spinner" class="hidden material-symbols-outlined text-base animate-spin-slow">progress_activity</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Position CRUD Logic -->
+<script type="module" src="js/position.js"></script>
 </body>
 </html>
 

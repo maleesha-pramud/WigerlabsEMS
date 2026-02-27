@@ -2,7 +2,6 @@ package com.wigerlabs.wigerlabs_ems.controller.api;
 
 import com.wigerlabs.wigerlabs_ems.dto.DepartmentDTO;
 import com.wigerlabs.wigerlabs_ems.filter.RoleAllowed;
-import com.wigerlabs.wigerlabs_ems.filter.Secured;
 import com.wigerlabs.wigerlabs_ems.service.DepartmentService;
 import com.wigerlabs.wigerlabs_ems.util.AppUtil;
 import jakarta.ws.rs.*;

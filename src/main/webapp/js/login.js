@@ -107,7 +107,7 @@ form.addEventListener('submit', async (e) => {
     const res = await post(API_ENDPOINTS.LOGIN, {
         email:    inputEmail.value.trim(),
         password: inputPassword.value,
-    });
+    }, { skipRedirectOn401: true });
 
     setLoading(false);
 

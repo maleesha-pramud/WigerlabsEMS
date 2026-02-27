@@ -39,7 +39,7 @@ public class DepartmentService {
                 responseObject.addProperty("departmentId", department.getId());
             }
         } catch (Exception e) {
-            if(transaction != null) {
+            if (transaction != null) {
                 transaction.rollback();
             }
             message = "Error creating department: " + e.getMessage();
@@ -55,12 +55,12 @@ public class DepartmentService {
         JsonObject responseObject = new JsonObject();
         boolean status = false;
         String message = "";
+        JsonArray departmentsArray = new JsonArray();
 
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             List<Department> departments = session.createQuery("FROM Department d ORDER BY d.name", Department.class)
                     .getResultList();
 
-            JsonArray departmentsArray = new JsonArray();
             for (Department department : departments) {
                 JsonObject deptObject = new JsonObject();
                 deptObject.addProperty("id", department.getId());
@@ -70,7 +70,6 @@ public class DepartmentService {
 
             status = true;
             message = "Departments retrieved successfully";
-            responseObject.add("departments", departmentsArray);
         } catch (Exception e) {
             message = "Error retrieving departments: " + e.getMessage();
             e.printStackTrace();
@@ -78,6 +77,7 @@ public class DepartmentService {
 
         responseObject.addProperty("status", status);
         responseObject.addProperty("message", message);
+        responseObject.add("data", departmentsArray);
         return responseObject.toString();
     }
 

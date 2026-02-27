@@ -130,7 +130,7 @@ async function loadDepartments() {
     renderLoadingRow();
     const res = await get(API_ENDPOINTS.GET_ALL_DEPARTMENTS);
     if (res.success && res.data.status) {
-        renderRows(res.data.departments);
+        renderRows(res.data.data);
     } else {
         tbody.innerHTML = `
             <tr>

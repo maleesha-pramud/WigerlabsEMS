@@ -5,7 +5,7 @@ const BASE_URL = 'http://localhost:8080/wigerlabs_ems/api';
  * Helper to handle fetch requests with a timeout and consistent error handling
  */
 const request = async (url, options = {}) => {
-    const { timeout = 10000, ...customOptions } = options;
+    const { timeout = 10000, skipRedirectOn401 = false, ...customOptions } = options;
 
     // Set up timeout controller
     const controller = new AbortController();
@@ -27,6 +27,9 @@ const request = async (url, options = {}) => {
         const data = await response.json().catch(() => ({})); // Handle empty responses
 
         if (!response.ok) {
+            if (response.status === 401 && !skipRedirectOn401) {
+                setTimeout(() => { window.location.href = 'login.html'; }, 1000);
+            }
             return {
                 success: false,
                 error: data.message || `Error: ${response.status} ${response.statusText}`
@@ -52,10 +55,11 @@ export const get = (url, params) => {
 };
 
 // POST request
-export const post = (url, data) => {
+export const post = (url, data, options = {}) => {
     return request(url, {
         method: 'POST',
         body: JSON.stringify(data),
+        ...options,
     });
 };
 

@@ -15,6 +15,8 @@ import {redirectTOLogin} from "../utils/common.js";
 const NAV_ITEMS = [
     {href: 'dashboard.html', icon: 'grid_view', label: 'Dashboard'},
     {href: 'employee.html', icon: 'group', label: 'Employee'},
+    {href: 'admin.html', icon: 'verified_user', label: 'Admin'},
+    {href: 'manager.html', icon: 'supervisor_account', label: 'Manager'},
     {href: 'position.html', icon: 'work', label: 'Position'},
     {href: 'department.html', icon: 'apartment', label: 'Department'},
 ];

@@ -185,6 +185,10 @@ public class UserService {
                     message = "Invalid status";
                 } else {
                     user.setName(userDTO.getName());
+                    user.setEmail(userDTO.getEmail());
+                    if (userDTO.getPassword() != null && !userDTO.getPassword().isEmpty()) {
+                        user.setPassword(SecurityUtil.hashPassword(userDTO.getPassword()));
+                    }
                     user.setUserRole(userRole);
                     user.setPosition(position);
                     user.setDepartment(department);

@@ -120,19 +120,25 @@ async function openEditModal(employee) {
     btnSubmitLabel.textContent = 'Save Changes';
     hideError();
 
-    // Hide email/password — not editable
-    emailField.classList.add('hidden');
-    passwordField.classList.add('hidden');
-
     empModal.classList.remove('hidden');
     await populateDropdowns();
 
-    // Pre-select values after dropdowns are populated
-    inputName.value        = employee.name;
-    selectDept.value       = String(employee.departmentId);
-    selectPos.value        = String(employee.positionId);
-    selectStatus.value     = String(employee.statusId);
+    // Fetch latest user data
+    const res = await get(API_ENDPOINTS.GET_EMPLOYEE_BY_ID(employee.id));
+    let user = employee;
+    if (res.success && res.data.status && res.data.data) {
+        user = res.data.data;
+    }
 
+    inputName.value        = user.name || '';
+    inputEmail.value       = user.email || '';
+    inputPassword.value    = '';
+    selectDept.value       = String(user.departmentId);
+    selectPos.value        = String(user.positionId);
+    selectStatus.value     = String(user.statusId);
+
+    emailField.classList.remove('hidden');
+    passwordField.classList.remove('hidden');
     inputName.focus();
 }
 
@@ -190,7 +196,6 @@ async function fetchAndRenderUser(userId) {
                 <div><strong>Email:</strong> ${escapeHtml(user.email || '—')}</div>
                 <div><strong>Department:</strong> ${escapeHtml(user.departmentName)}</div>
                 <div><strong>Position:</strong> ${escapeHtml(user.positionName)}</div>
-                <div class="capitalize"><strong>User Role:</strong> ${escapeHtml(user.userRoleName)}</div>
                 <div><strong>Status:</strong> ${statusBadge(user.statusValue)}</div>
             </div>
         `;
@@ -309,24 +314,23 @@ async function handleSubmit() {
     hideError();
 
     const name       = inputName.value.trim();
+    const email      = inputEmail.value.trim();
+    const password   = inputPassword.value;
     const deptId     = parseInt(selectDept.value);
     const posId      = parseInt(selectPos.value);
     const statusId   = parseInt(selectStatus.value);
 
     // Validation
     if (!name)       { showError('Full name is required.'); return; }
+    if (!email)      { showError('Email is required.'); return; }
     if (!deptId)     { showError('Please select a department.'); return; }
     if (!posId)      { showError('Please select a position.'); return; }
 
     let res;
 
     if (editingId === null) {
-        // Add mode — also need email + password
-        const email    = inputEmail.value.trim();
-        const password = inputPassword.value;
-        if (!email)    { showError('Email is required.'); return; }
+        // Add mode
         if (!password) { showError('Password is required.'); return; }
-
         setSubmitLoading(true);
         res = await post(API_ENDPOINTS.ADD_EMPLOYEE, {
             name, email, password,
@@ -340,6 +344,8 @@ async function handleSubmit() {
         res = await put(API_ENDPOINTS.UPDATE_EMPLOYEE, {
             id: editingId,
             name,
+            email,
+            password: password || undefined,
             departmentId: deptId,
             positionId: posId,
             statusId,

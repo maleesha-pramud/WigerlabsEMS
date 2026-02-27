@@ -15,10 +15,11 @@ import {redirectTOLogin} from "../utils/common.js";
 const NAV_ITEMS = [
     {href: 'dashboard.html', icon: 'grid_view', label: 'Dashboard'},
     {href: 'employee.html', icon: 'group', label: 'Employee'},
-    {href: 'admin.html', icon: 'verified_user', label: 'Admin'},
+    // Admin and Manager links will be conditionally rendered
+    {href: 'admin.html', icon: 'verified_user', label: 'Admin', adminOnly: true},
     {href: 'manager.html', icon: 'supervisor_account', label: 'Manager'},
     {href: 'position.html', icon: 'work', label: 'Position'},
-    {href: 'department.html', icon: 'apartment', label: 'Department'},
+    {href: 'department.html', icon: 'apartment', label: 'Department', adminOnly: true},
 ];
 
 const DEPT_COLORS = [
@@ -44,20 +45,23 @@ class AppSidebar extends HTMLElement {
     // Render
     _render(departments) {
         const current = window.location.pathname.split('/').pop() || 'index.html';
+        const userRole = UserStore.getRole();
 
-        const navItems = NAV_ITEMS.map(({href, icon, label}) => {
-            const isActive = href === current;
-            const cls = isActive
-                ? 'flex items-center space-x-3 px-2 py-2.5 rounded-lg bg-slate-700/50 text-white transition-colors'
-                : 'flex items-center space-x-3 px-2 py-2.5 rounded-lg text-slate-300 hover:bg-slate-700/50 hover:text-white transition-colors';
-            return `
-                <li>
-                    <a class="${cls}" href="${href}">
-                        <span class="material-symbols-outlined text-[20px]">${icon}</span>
-                        <span class="text-sm font-medium">${label}</span>
-                    </a>
-                </li>`;
-        }).join('');
+        const navItems = NAV_ITEMS
+            .filter(item => !item.adminOnly || userRole === 'admin')
+            .map(({href, icon, label}) => {
+                const isActive = href === current;
+                const cls = isActive
+                    ? 'flex items-center space-x-3 px-2 py-2.5 rounded-lg bg-slate-700/50 text-white transition-colors'
+                    : 'flex items-center space-x-3 px-2 py-2.5 rounded-lg text-slate-300 hover:bg-slate-700/50 hover:text-white transition-colors';
+                return `
+                    <li>
+                        <a class="${cls}" href="${href}">
+                            <span class="material-symbols-outlined text-[20px]">${icon}</span>
+                            <span class="text-sm font-medium">${label}</span>
+                        </a>
+                    </li>`;
+            }).join('');
 
         const deptItems = departments.length > 0
             ? departments.map((dept, i) => {

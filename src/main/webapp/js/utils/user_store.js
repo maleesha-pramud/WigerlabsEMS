@@ -26,7 +26,7 @@ const UserStore = {
     // READ: Specific fields (Helper methods)
     getRole() {
         const user = this.get();
-        return user ? user.userRoleName : null;
+        return user ? user.userRole : null;
     },
 
     getUserId() {

@@ -29,7 +29,7 @@ const request = async (url, options = {}) => {
         const data = await response.json().catch(() => ({})); // Handle empty responses
 
         if (!response.ok) {
-            if (response.status === 401 && !skipRedirectOn401) {
+            if ((response.status === 401 || response.status === 403) && !skipRedirectOn401) {
                 UserStore.clear();
                 setTimeout(() => { redirectTOLogin(); }, 1000);
             }

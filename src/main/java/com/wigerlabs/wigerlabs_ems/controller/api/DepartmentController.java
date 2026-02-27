@@ -1,6 +1,7 @@
 package com.wigerlabs.wigerlabs_ems.controller.api;
 
 import com.wigerlabs.wigerlabs_ems.dto.DepartmentDTO;
+import com.wigerlabs.wigerlabs_ems.filter.RoleAllowed;
 import com.wigerlabs.wigerlabs_ems.filter.Secured;
 import com.wigerlabs.wigerlabs_ems.service.DepartmentService;
 import com.wigerlabs.wigerlabs_ems.util.AppUtil;
@@ -9,7 +10,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 @Path("/department")
-@Secured
+@RoleAllowed({"admin"})
 public class DepartmentController {
 
     private final DepartmentService departmentService = new DepartmentService();

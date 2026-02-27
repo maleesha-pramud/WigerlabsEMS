@@ -70,4 +70,12 @@ public class AdminController {
         String responseJson = userService.changeAdminStatus(id, jsonObject.get("statusId").getAsInt());
         return Response.ok().entity(responseJson).build();
     }
+
+    @GET
+    @Path("/search")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response searchAdmins(@QueryParam("q") String query) {
+        String responseJson = userService.searchAdmins(query);
+        return Response.ok().entity(responseJson).build();
+    }
 }

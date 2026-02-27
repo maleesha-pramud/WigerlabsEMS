@@ -70,4 +70,12 @@ public class EmployeeController {
         String responseJson = userService.changeEmployeeStatus(id, jsonObject.get("statusId").getAsInt());
         return Response.ok().entity(responseJson).build();
     }
+
+    @GET
+    @Path("/search")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response searchEmployees(@QueryParam("q") String query) {
+        String responseJson = userService.searchEmployees(query);
+        return Response.ok().entity(responseJson).build();
+    }
 }

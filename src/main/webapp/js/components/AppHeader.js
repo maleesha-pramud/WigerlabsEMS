@@ -41,7 +41,7 @@ class AppHeader extends HTMLElement {
                         <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400 pointer-events-none">
                             <span class="material-symbols-outlined text-[20px]">search</span>
                         </span>
-                        <input class="w-full py-2 pl-10 pr-4 bg-transparent border-none text-sm text-slate-600 dark:text-slate-300 focus:ring-0 placeholder-slate-400"
+                        <input id="header-search-input" class="w-full py-2 pl-10 pr-4 bg-transparent border-none text-sm text-slate-600 dark:text-slate-300 focus:ring-0 placeholder-slate-400"
                                placeholder="${placeholder}" type="text"/>
                     </div>
                 </div>
@@ -79,6 +79,25 @@ class AppHeader extends HTMLElement {
                     </div>
                 </div>
             </header>`;
+
+        // Add search event listener
+        const input = this.querySelector('#header-search-input');
+        if (input) {
+            input.addEventListener('input', (e) => {
+                this.dispatchEvent(new CustomEvent('search', {
+                    detail: { query: e.target.value },
+                    bubbles: true,
+                }));
+            });
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    this.dispatchEvent(new CustomEvent('search', {
+                        detail: { query: e.target.value },
+                        bubbles: true,
+                    }));
+                }
+            });
+        }
     }
 
     _escape(str) {

@@ -341,5 +341,23 @@ tbody.addEventListener('change', (e) => {
         }
     }
 });
+const headerSearch = document.querySelector('app-header');
+if (headerSearch) {
+    headerSearch.addEventListener('search', async (e) => {
+        const q = e.detail?.query || '';
+        if (!q.trim()) {
+            loadAdmins();
+            return;
+        }
+        renderLoadingRow();
+        const res = await get(API_ENDPOINTS.SEARCH_ADMIN(q));
+        if (res.success && res.data.status) {
+            renderRows(res.data.data);
+        } else {
+            tbody.innerHTML = `<tr><td colspan="6" class="px-6 py-10 text-center text-sm text-red-500">${res.data?.message || res.error || 'Failed to search admins.'}</td></tr>`;
+            toast.show(res.data?.message || res.error || 'Failed to search admins.', 'error');
+        }
+    });
+}
 loadAdmins();
 

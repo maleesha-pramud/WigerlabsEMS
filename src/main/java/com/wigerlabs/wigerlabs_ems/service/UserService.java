@@ -348,4 +348,56 @@ public class UserService {
         responseObject.addProperty("message", message);
         return responseObject.toString();
     }
+
+    public String searchAdmins(String query) {
+        return searchUsersByRoleAndQuery(1, query);
+    }
+    public String searchManagers(String query) {
+        return searchUsersByRoleAndQuery(2, query);
+    }
+    public String searchEmployees(String query) {
+        return searchUsersByRoleAndQuery(3, query);
+    }
+
+    private String searchUsersByRoleAndQuery(int roleId, String query) {
+        JsonObject responseObject = new JsonObject();
+        boolean status = false;
+        String message = "";
+        JsonArray usersArray = new JsonArray();
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            String hql = "FROM User u WHERE u.userRole.id = :roleId";
+            if (query != null && !query.trim().isEmpty()) {
+                hql += " AND (lower(u.name) LIKE :q OR lower(u.email) LIKE :q OR lower(u.department.name) LIKE :q OR lower(u.position.name) LIKE :q)";
+            }
+            var q = session.createQuery(hql, User.class);
+            q.setParameter("roleId", roleId);
+            if (query != null && !query.trim().isEmpty()) {
+                q.setParameter("q", "%" + query.trim().toLowerCase() + "%");
+            }
+            List<User> users = q.getResultList();
+            for (User user : users) {
+                JsonObject userObject = new JsonObject();
+                userObject.addProperty("id", user.getId());
+                userObject.addProperty("name", user.getName());
+                userObject.addProperty("userRoleId", user.getUserRole().getId());
+                userObject.addProperty("userRoleName", user.getUserRole().getName());
+                userObject.addProperty("positionId", user.getPosition().getId());
+                userObject.addProperty("positionName", user.getPosition().getName());
+                userObject.addProperty("departmentId", user.getDepartment().getId());
+                userObject.addProperty("departmentName", user.getDepartment().getName());
+                userObject.addProperty("statusId", user.getStatus().getId());
+                userObject.addProperty("statusValue", user.getStatus().getValue());
+                userObject.addProperty("email", user.getEmail());
+                usersArray.add(userObject);
+            }
+            status = true;
+            message = "Search successful";
+        } catch (Exception e) {
+            message = "Error searching users: " + e.getMessage();
+        }
+        responseObject.addProperty("status", status);
+        responseObject.addProperty("message", message);
+        responseObject.add("data", usersArray);
+        return responseObject.toString();
+    }
 }

@@ -17,6 +17,7 @@ export const API_ENDPOINTS = {
     GET_ADMIN_BY_ID: (id) => `/admin/${id}`,
     UPDATE_ADMIN: '/admin',
     DELETE_ADMIN: (id) => `/admin/${id}`,
+    SEARCH_ADMIN: (q) => `/admin/search?q=${encodeURIComponent(q)}`,
 
     // Manager
     ADD_MANAGER: '/manager',
@@ -24,6 +25,7 @@ export const API_ENDPOINTS = {
     GET_MANAGER_BY_ID: (id) => `/manager/${id}`,
     UPDATE_MANAGER: '/manager',
     DELETE_MANAGER: (id) => `/manager/${id}`,
+    SEARCH_MANAGER: (q) => `/manager/search?q=${encodeURIComponent(q)}`,
 
     // Employee
     ADD_EMPLOYEE: '/employee',
@@ -31,6 +33,7 @@ export const API_ENDPOINTS = {
     GET_EMPLOYEE_BY_ID: (id) => `/employee/${id}`,
     UPDATE_EMPLOYEE: '/employee',
     DELETE_EMPLOYEE: (id) => `/employee/${id}`,
+    SEARCH_EMPLOYEE: (q) => `/employee/search?q=${encodeURIComponent(q)}`,
 
     // Department
     ADD_DEPARTMENT: '/department',

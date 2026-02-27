@@ -205,7 +205,7 @@ async function fetchAndRenderUser(userId) {
                 <div><strong>Department:</strong> ${escapeHtml(user.departmentName)}</div>
                 <div><strong>Position:</strong> ${escapeHtml(user.positionName)}</div>
                 <div><strong>Status:</strong> ${statusBadge(user.statusValue)}</div>
-                <div><strong>Hire Date:</strong> ${user.hireDate ? escapeHtml(user.hireDate) : '—'}</div>
+                <div><strong>Hire Date:</strong> ${formatDate(user.hireDate)}</div>
                 <div><strong>Salary:</strong> ${user.salary ? escapeHtml(user.salary) : '—'}</div>
             </div>
         `;
@@ -231,7 +231,7 @@ async function changeStatus(employee, newStatusId) {
 function renderLoadingRow() {
     tbody.innerHTML = `
         <tr>
-            <td colspan="6" class="px-6 py-10 text-center">
+            <td colspan="8" class="px-6 py-10 text-center">
                 <div class="flex items-center justify-center gap-2 text-sm text-slate-400 dark:text-slate-500">
                     <span class="material-symbols-outlined animate-spin-slow">progress_activity</span>
                     Loading employees...
@@ -272,7 +272,7 @@ function renderRows(employees) {
             <td class="px-6 py-4 whitespace-nowrap text-slate-700 dark:text-slate-300">${escapeHtml(emp.departmentName)}</td>
             <td class="px-6 py-4 whitespace-nowrap text-slate-700 dark:text-slate-300">${escapeHtml(emp.positionName)}</td>
             <td class="px-6 py-4 whitespace-nowrap">${statusBadge(emp.statusValue)}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-slate-700 dark:text-slate-300">${emp.hireDate ? escapeHtml(emp.hireDate) : '—'}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-slate-700 dark:text-slate-300">${formatDate(emp.hireDate)}</td>
             <td class="px-6 py-4 whitespace-nowrap text-slate-700 dark:text-slate-300">${emp.salary ? escapeHtml(emp.salary) : '—'}</td>
             <td class="px-6 py-4 text-right">
                 <div class="inline-flex items-center space-x-1">
@@ -489,3 +489,7 @@ if (headerSearch) {
 // Init
 loadEmployees();
 
+function formatDate(dateStr) {
+    if (!dateStr) return '—';
+    return dateStr.split('T')[0];
+}

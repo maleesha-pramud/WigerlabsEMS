@@ -186,7 +186,7 @@ async function fetchAndRenderAdmin(adminId) {
                 <div><strong>Department:</strong> ${escapeHtml(user.departmentName)}</div>
                 <div><strong>Position:</strong> ${escapeHtml(user.positionName)}</div>
                 <div><strong>Status:</strong> ${statusBadge(user.statusValue)}</div>
-                <div><strong>Hire Date:</strong> ${user.hireDate ? escapeHtml(user.hireDate) : '—'}</div>
+                <div><strong>Hire Date:</strong> ${formatDate(user.hireDate)}</div>
                 <div><strong>Salary:</strong> ${user.salary ? escapeHtml(user.salary) : '—'}</div>
             </div>
         `;
@@ -251,7 +251,7 @@ function renderRows(admins) {
             <td class="px-6 py-4 whitespace-nowrap text-slate-700 dark:text-slate-300">${escapeHtml(admin.departmentName)}</td>
             <td class="px-6 py-4 whitespace-nowrap text-slate-700 dark:text-slate-300">${escapeHtml(admin.positionName)}</td>
             <td class="px-6 py-4 whitespace-nowrap">${statusBadge(admin.statusValue)}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-slate-700 dark:text-slate-300">${admin.hireDate ? escapeHtml(admin.hireDate) : '—'}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-slate-700 dark:text-slate-300">${formatDate(admin.hireDate)}</td>
             <td class="px-6 py-4 whitespace-nowrap text-slate-700 dark:text-slate-300">${admin.salary ? escapeHtml(admin.salary) : '—'}</td>
             <td class="px-6 py-4 text-right">
                 <div class="inline-flex items-center space-x-1">
@@ -457,3 +457,7 @@ if (headerSearch) {
 }
 loadAdmins();
 
+function formatDate(dateStr) {
+    if (!dateStr) return '—';
+    return dateStr.split('T')[0];
+}

@@ -1,10 +1,10 @@
-// ─── Server Configuration ────────────────────────────────────────────────────
+// Server Configuration
 export const SERVER_PORT = 8080;
 export const CONTEXT_PATH = '/wigerlabs_ems';
 export const BASE_URL = `http://localhost:${SERVER_PORT}${CONTEXT_PATH}`;
 export const API_BASE_URL = `${BASE_URL}/api`;
 
-// ─── API Endpoints ────────────────────────────────────────────────────────────
+// API Endpoints
 export const API_ENDPOINTS = {
     // Auth
     LOGIN: '/auth/login',

@@ -12,7 +12,7 @@ await Promise.all([
     customElements.whenDefined('confirm-modal'),
 ]);
 
-// ── DOM refs ──────────────────────────────────────────────────────────────────
+// DOM refs
 const tbody        = document.getElementById('employee-tbody');
 const btnOpenAdd   = document.getElementById('btn-open-add');
 const toast        = document.getElementById('toast');
@@ -36,10 +36,10 @@ const btnSubmitModal   = document.getElementById('btn-submit-modal');
 const btnSubmitLabel   = document.getElementById('btn-submit-label');
 const btnSubmitSpinner = document.getElementById('btn-submit-spinner');
 
-// ── State ─────────────────────────────────────────────────────────────────────
+// State
 let editingId = null; // null = add mode, number = edit mode
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
+// Helpers
 function escapeHtml(str) {
     return String(str ?? '')
         .replace(/&/g, '&amp;')
@@ -66,7 +66,7 @@ function setSubmitLoading(loading) {
     btnSubmitSpinner.classList.toggle('hidden', !loading);
 }
 
-// ── Dropdowns ─────────────────────────────────────────────────────────────────
+// Dropdowns
 async function populateDropdowns() {
     const [deptRes, posRes] = await Promise.all([
         get(API_ENDPOINTS.GET_ALL_DEPARTMENTS),
@@ -92,7 +92,7 @@ async function populateDropdowns() {
     }
 }
 
-// ── Modal ─────────────────────────────────────────────────────────────────────
+// Modal
 async function openAddModal() {
     editingId                  = null;
     modalTitle.textContent     = 'Add Employee';
@@ -140,7 +140,85 @@ function closeModal() {
     empModal.classList.add('hidden');
 }
 
-// ── Render ────────────────────────────────────────────────────────────────────
+// View Modal
+let viewModal = null;
+let viewModalContent = null;
+
+function createViewModal() {
+    if (document.getElementById('view-modal')) return;
+    const modal = document.createElement('div');
+    modal.id = 'view-modal';
+    modal.className = 'hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm';
+    modal.innerHTML = `
+        <div class="bg-white dark:bg-surface-dark w-full max-w-md mx-4 rounded-2xl shadow-2xl ring-1 ring-black/5">
+            <div class="flex items-center justify-between px-6 py-5 border-b border-gray-100 dark:border-slate-700">
+                <h3 class="text-lg font-semibold text-slate-900 dark:text-white">Employee Details</h3>
+                <button id="btn-close-view-modal" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <div id="view-modal-content" class="px-6 py-6 space-y-4"></div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    viewModal = modal;
+    viewModalContent = modal.querySelector('#view-modal-content');
+    modal.querySelector('#btn-close-view-modal').addEventListener('click', () => modal.classList.add('hidden'));
+    modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.add('hidden'); });
+}
+
+function openViewModal(employee) {
+    createViewModal();
+    viewModalContent.innerHTML = `
+        <div class="flex items-center justify-center gap-2 text-sm text-slate-400 dark:text-slate-500 py-8">
+            <span class="material-symbols-outlined animate-spin-slow">progress_activity</span>
+            Loading user details...
+        </div>
+    `;
+    viewModal.classList.remove('hidden');
+    fetchAndRenderUser(employee.id);
+}
+
+async function fetchAndRenderUser(userId) {
+    const res = await get(API_ENDPOINTS.GET_EMPLOYEE_BY_ID(userId));
+    if (res.success && res.data.status && res.data.data) {
+        const user = res.data.data;
+        viewModalContent.innerHTML = `
+            <div class="space-y-2">
+                <div><strong>ID:</strong> ${escapeHtml(String(user.id))}</div>
+                <div><strong>Name:</strong> ${escapeHtml(user.name)}</div>
+                <div><strong>Email:</strong> ${escapeHtml(user.email || '—')}</div>
+                <div><strong>Department:</strong> ${escapeHtml(user.departmentName)}</div>
+                <div><strong>Position:</strong> ${escapeHtml(user.positionName)}</div>
+                <div class="capitalize"><strong>User Role:</strong> ${escapeHtml(user.userRoleName)}</div>
+                <div><strong>Status:</strong> ${statusBadge(user.statusValue)}</div>
+            </div>
+        `;
+    } else {
+        viewModalContent.innerHTML = `<div class="text-red-500 py-8">${res.data?.message || res.error || 'Failed to load user details.'}</div>`;
+    }
+}
+
+// Status Change
+async function changeStatus(employee, newStatusId) {
+    setSubmitLoading(true);
+    const res = await put(API_ENDPOINTS.UPDATE_EMPLOYEE, {
+        id: employee.id,
+        name: employee.name,
+        departmentId: employee.departmentId,
+        positionId: employee.positionId,
+        statusId: newStatusId,
+    });
+    setSubmitLoading(false);
+    if (res.success && res.data.status) {
+        toast.show('Status updated.', 'success');
+        loadEmployees();
+    } else {
+        toast.show(res.data?.message || res.error || 'Failed to update status.', 'error');
+    }
+}
+
+// Render
 function renderLoadingRow() {
     tbody.innerHTML = `
         <tr>
@@ -187,6 +265,10 @@ function renderRows(employees) {
             <td class="px-6 py-4 whitespace-nowrap">${statusBadge(emp.statusValue)}</td>
             <td class="px-6 py-4 text-right">
                 <div class="inline-flex items-center space-x-1">
+                    <button class="btn-view p-1.5 rounded-lg text-slate-400 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
+                            data-employee='${JSON.stringify(emp)}' title="View">
+                        <span class="material-symbols-outlined text-lg pointer-events-none">visibility</span>
+                    </button>
                     <button class="btn-edit p-1.5 rounded-lg text-slate-400 hover:text-primary hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors"
                             data-employee='${JSON.stringify({ id: emp.id, name: emp.name, departmentId: emp.departmentId, positionId: emp.positionId, statusId: emp.statusId })}'
                             title="Edit">
@@ -196,13 +278,17 @@ function renderRows(employees) {
                             data-id="${emp.id}" data-name="${escapeHtml(emp.name)}" title="Delete">
                         <span class="material-symbols-outlined text-lg pointer-events-none">delete</span>
                     </button>
+                    <select class="btn-status px-2 py-1 rounded-lg text-xs border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200" data-employee='${JSON.stringify({ id: emp.id, name: emp.name, departmentId: emp.departmentId, positionId: emp.positionId, statusId: emp.statusId })}' title="Change Status">
+                        <option value="1" ${emp.statusId === 1 ? 'selected' : ''}>Active</option>
+                        <option value="2" ${emp.statusId === 2 ? 'selected' : ''}>Inactive</option>
+                    </select>
                 </div>
             </td>
         </tr>
     `).join('');
 }
 
-// ── API calls ─────────────────────────────────────────────────────────────────
+// API calls
 async function loadEmployees() {
     renderLoadingRow();
     const res = await get(API_ENDPOINTS.GET_ALL_EMPLOYEES);
@@ -271,7 +357,7 @@ async function handleSubmit() {
     }
 }
 
-// ── Event listeners ───────────────────────────────────────────────────────────
+// Event listeners
 btnOpenAdd.addEventListener('click', openAddModal);
 btnCloseModal.addEventListener('click', closeModal);
 btnCancelModal.addEventListener('click', closeModal);
@@ -282,14 +368,18 @@ empModal.addEventListener('click', (e) => { if (e.target === empModal) closeModa
 
 // Table row delegation
 tbody.addEventListener('click', (e) => {
+    const viewBtn   = e.target.closest('.btn-view');
     const editBtn   = e.target.closest('.btn-edit');
     const deleteBtn = e.target.closest('.btn-delete');
 
+    if (viewBtn) {
+        const employee = JSON.parse(viewBtn.dataset.employee);
+        openViewModal(employee);
+    }
     if (editBtn) {
         const employee = JSON.parse(editBtn.dataset.employee);
         openEditModal(employee);
     }
-
     if (deleteBtn) {
         const { id, name } = deleteBtn.dataset;
         confirmModal.open({
@@ -309,6 +399,17 @@ tbody.addEventListener('click', (e) => {
     }
 });
 
-// ── Init ──────────────────────────────────────────────────────────────────────
+tbody.addEventListener('change', (e) => {
+    const statusSelect = e.target.closest('.btn-status');
+    if (statusSelect) {
+        const employee = JSON.parse(statusSelect.dataset.employee);
+        const newStatusId = parseInt(statusSelect.value);
+        if (employee.statusId !== newStatusId) {
+            changeStatus(employee, newStatusId);
+        }
+    }
+});
+
+// Init
 loadEmployees();
 

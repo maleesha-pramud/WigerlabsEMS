@@ -120,14 +120,15 @@ public class UserService {
         JsonObject responseObject = new JsonObject();
         boolean status = false;
         String message = "";
+        JsonObject userObject = new JsonObject();
 
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             User user = session.get(User.class, id);
 
             if (user != null && user.getUserRole().getId() == userRoleId) {
-                JsonObject userObject = new JsonObject();
                 userObject.addProperty("id", user.getId());
                 userObject.addProperty("name", user.getName());
+                userObject.addProperty("email", user.getEmail());
                 userObject.addProperty("userRoleId", user.getUserRole().getId());
                 userObject.addProperty("userRoleName", user.getUserRole().getName());
                 userObject.addProperty("positionId", user.getPosition().getId());
@@ -139,7 +140,6 @@ public class UserService {
 
                 status = true;
                 message = "User retrieved successfully";
-                responseObject.add("user", userObject);
             } else {
                 message = "User not found or role mismatch";
             }
@@ -150,6 +150,7 @@ public class UserService {
 
         responseObject.addProperty("status", status);
         responseObject.addProperty("message", message);
+        responseObject.add("data", userObject);
         return responseObject.toString();
     }
 

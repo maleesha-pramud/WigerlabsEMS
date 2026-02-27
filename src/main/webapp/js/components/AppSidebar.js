@@ -39,7 +39,7 @@ class AppSidebar extends HTMLElement {
         this._bindLogout();
     }
 
-    // ── Render ─────────────────────────────────────────────────────────────────
+    // Render
     _render(departments) {
         const current = window.location.pathname.split('/').pop() || 'index.html';
 
@@ -108,7 +108,7 @@ class AppSidebar extends HTMLElement {
             </aside>`;
     }
 
-    // ── Active link ────────────────────────────────────────────────────────────
+    // Active link
     _setActiveLink() {
         // Already handled in _render() via class logic, but re-run after innerHTML set
         const current = window.location.pathname.split('/').pop() || 'index.html';
@@ -120,7 +120,7 @@ class AppSidebar extends HTMLElement {
         });
     }
 
-    // ── Load departments from API ──────────────────────────────────────────────
+    // Load departments from API
     async _loadDepartments() {
         const res = await get(API_ENDPOINTS.GET_ALL_DEPARTMENTS);
         if (res.success && res.data.status && res.data.departments?.length) {
@@ -140,7 +140,7 @@ class AppSidebar extends HTMLElement {
         }
     }
 
-    // ── Logout ─────────────────────────────────────────────────────────────────
+    // Logout
     _bindLogout() {
         this.addEventListener('click', async (e) => {
             if (e.target.closest('#sidebar-logout-btn')) {
@@ -154,7 +154,7 @@ class AppSidebar extends HTMLElement {
         });
     }
 
-    // ── Helpers ────────────────────────────────────────────────────────────────
+    // Helpers
     _escape(str) {
         return String(str)
             .replace(/&/g, '&amp;').replace(/</g, '&lt;')

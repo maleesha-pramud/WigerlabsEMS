@@ -12,7 +12,7 @@ await Promise.all([
     customElements.whenDefined('confirm-modal'),
 ]);
 
-// ── DOM refs ──────────────────────────────────────────────────────────────────
+// DOM refs
 const tbody        = document.getElementById('position-tbody');
 const btnOpenAdd   = document.getElementById('btn-open-add');
 const toast        = document.getElementById('toast');
@@ -164,7 +164,7 @@ async function handleSubmit() {
     }
 }
 
-// ── Event listeners ───────────────────────────────────────────────────────────
+// Event listeners
 btnOpenAdd.addEventListener('click', openAddModal);
 btnCloseModal.addEventListener('click', closeModal);
 btnCancelModal.addEventListener('click', closeModal);

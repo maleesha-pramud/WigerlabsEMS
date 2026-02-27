@@ -3,7 +3,8 @@
  * Handles login page logic: session check, form validation, API call, redirect.
  * Depends on: api.js, ToastNotification.js, UserStore
  */
-import { get, post, API_ENDPOINTS } from './api.js';
+import { get, post } from './api.js';
+import { API_ENDPOINTS } from './utils/constants.js';
 import UserStore from './utils/user_store.js';
 
 // Wait for the custom element to be defined and upgraded before running

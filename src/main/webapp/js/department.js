@@ -3,7 +3,8 @@
  * Handles all Department CRUD operations for department.html.
  * Depends on:  api.js, ConfirmModal.js, ToastNotification.js
  */
-import { get, post, put, del, API_ENDPOINTS } from './api.js';
+import { get, post, put, del } from './api.js';
+import { API_ENDPOINTS } from './utils/constants.js';
 
 // Wait for web components to be defined and upgraded before running
 await Promise.all([

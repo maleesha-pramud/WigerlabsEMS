@@ -7,27 +7,29 @@
  * Automatically highlights the active nav link based on the current page filename.
  * Dynamically loads the department list from the API.
  */
-import { get, post, API_ENDPOINTS } from '../api.js';
+import {get, post} from '../api.js';
+import {API_ENDPOINTS} from '../utils/constants.js';
 import UserStore from '../utils/user_store.js';
+import {redirectTOLogin} from "../utils/common.js";
 
 const NAV_ITEMS = [
-    { href: 'dashboard.html',  icon: 'grid_view',  label: 'Dashboard'   },
-    { href: 'employee.html',   icon: 'group',      label: 'Employee'    },
-    { href: 'position.html',   icon: 'work',       label: 'Position'    },
-    { href: 'department.html', icon: 'apartment',  label: 'Department'  },
+    {href: 'dashboard.html', icon: 'grid_view', label: 'Dashboard'},
+    {href: 'employee.html', icon: 'group', label: 'Employee'},
+    {href: 'position.html', icon: 'work', label: 'Position'},
+    {href: 'department.html', icon: 'apartment', label: 'Department'},
 ];
 
 const DEPT_COLORS = [
     'bg-orange-500', 'bg-indigo-500', 'bg-teal-500',
-    'bg-blue-500',   'bg-purple-500', 'bg-pink-500',
-    'bg-emerald-500','bg-yellow-500',
+    'bg-blue-500', 'bg-purple-500', 'bg-pink-500',
+    'bg-emerald-500', 'bg-yellow-500',
 ];
 
 class AppSidebar extends HTMLElement {
     connectedCallback() {
         // Instant local auth guard — redirect to login if no user in store
         if (!UserStore.isLoggedIn()) {
-            window.location.href = 'login.html';
+            redirectTOLogin();
             return;
         }
 
@@ -41,7 +43,7 @@ class AppSidebar extends HTMLElement {
     _render(departments) {
         const current = window.location.pathname.split('/').pop() || 'index.html';
 
-        const navItems = NAV_ITEMS.map(({ href, icon, label }) => {
+        const navItems = NAV_ITEMS.map(({href, icon, label}) => {
             const isActive = href === current;
             const cls = isActive
                 ? 'flex items-center space-x-3 px-2 py-2.5 rounded-lg bg-slate-700/50 text-white transition-colors'
@@ -145,8 +147,9 @@ class AppSidebar extends HTMLElement {
                 // Clear local store immediately for instant UX
                 UserStore.clear();
                 // Fire server-side session invalidation (don't block on result)
-                post(API_ENDPOINTS.LOGOUT, {}).catch(() => {});
-                window.location.href = 'login.html';
+                post(API_ENDPOINTS.LOGOUT, {}).catch(() => {
+                });
+                redirectTOLogin();
             }
         });
     }

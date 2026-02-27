@@ -1,7 +1,7 @@
 import UserStore from './utils/user_store.js';
+import {redirectTOLogin} from "./utils/common.js";
+import { API_BASE_URL } from './utils/constants.js';
 
-// Base URL for API
-const BASE_URL = 'http://localhost:8080/wigerlabs_ems/api';
 
 /**
  * Helper to handle fetch requests with a timeout and consistent error handling
@@ -23,7 +23,7 @@ const request = async (url, options = {}) => {
     };
 
     try {
-        const response = await fetch(`${BASE_URL}${url}`, config);
+        const response = await fetch(`${API_BASE_URL}${url}`, config);
         clearTimeout(id);
 
         const data = await response.json().catch(() => ({})); // Handle empty responses
@@ -31,7 +31,7 @@ const request = async (url, options = {}) => {
         if (!response.ok) {
             if (response.status === 401 && !skipRedirectOn401) {
                 UserStore.clear();
-                setTimeout(() => { window.location.href = '/login.html'; }, 1000);
+                setTimeout(() => { redirectTOLogin(); }, 1000);
             }
             return {
                 success: false,
@@ -77,47 +77,4 @@ export const put = (url, data) => {
 // DELETE request
 export const del = (url) => {
     return request(url, { method: 'DELETE' });
-};
-
-// API endpoints
-export const API_ENDPOINTS = {
-    // Auth
-    LOGIN: '/auth/login',
-    LOGOUT: '/auth/logout',
-    CHECK_SESSION: '/auth/check',
-
-    // Admin
-    ADD_ADMIN: '/admin',
-    GET_ALL_ADMINS: '/admin',
-    GET_ADMIN_BY_ID: (id) => `/admin/${id}`,
-    UPDATE_ADMIN: '/admin',
-    DELETE_ADMIN: (id) => `/admin/${id}`,
-
-    // Manager
-    ADD_MANAGER: '/manager',
-    GET_ALL_MANAGERS: '/manager',
-    GET_MANAGER_BY_ID: (id) => `/manager/${id}`,
-    UPDATE_MANAGER: '/manager',
-    DELETE_MANAGER: (id) => `/manager/${id}`,
-
-    // Employee
-    ADD_EMPLOYEE: '/employee',
-    GET_ALL_EMPLOYEES: '/employee',
-    GET_EMPLOYEE_BY_ID: (id) => `/employee/${id}`,
-    UPDATE_EMPLOYEE: '/employee',
-    DELETE_EMPLOYEE: (id) => `/employee/${id}`,
-
-    // Department
-    ADD_DEPARTMENT: '/department',
-    GET_ALL_DEPARTMENTS: '/department',
-    GET_DEPARTMENT_BY_ID: (id) => `/department/${id}`,
-    UPDATE_DEPARTMENT: '/department',
-    DELETE_DEPARTMENT: (id) => `/department/${id}`,
-
-    // Position
-    ADD_POSITION: '/position',
-    GET_ALL_POSITIONS: '/position',
-    GET_POSITION_BY_ID: (id) => `/position/${id}`,
-    UPDATE_POSITION: '/position',
-    DELETE_POSITION: (id) => `/position/${id}`,
 };

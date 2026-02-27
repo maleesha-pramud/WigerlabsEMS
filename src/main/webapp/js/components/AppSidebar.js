@@ -1,19 +1,9 @@
-/**
- * AppSidebar Web Component
- *
- * Usage:
- *   <app-sidebar></app-sidebar>
- *
- * Automatically highlights the active nav link based on the current page filename.
- * Dynamically loads the department list from the API.
- */
 import {get, post} from '../api.js';
 import {API_ENDPOINTS} from '../utils/constants.js';
 import UserStore from '../utils/user_store.js';
 import {redirectTOLogin} from "../utils/common.js";
 
 const NAV_ITEMS = [
-    {href: 'dashboard.html', icon: 'grid_view', label: 'Dashboard'},
     {href: 'employee.html', icon: 'group', label: 'Employee'},
     // Admin and Manager links will be conditionally rendered
     {href: 'admin.html', icon: 'verified_user', label: 'Admin', adminOnly: true},
@@ -44,7 +34,7 @@ class AppSidebar extends HTMLElement {
 
     // Render
     _render(departments) {
-        const current = window.location.pathname.split('/').pop() || 'index.html';
+        const current = window.location.pathname.split('/').pop() || 'employee.html';
         const userRole = UserStore.getRole();
 
         const navItems = NAV_ITEMS
@@ -117,7 +107,7 @@ class AppSidebar extends HTMLElement {
     // Active link
     _setActiveLink() {
         // Already handled in _render() via class logic, but re-run after innerHTML set
-        const current = window.location.pathname.split('/').pop() || 'index.html';
+        const current = window.location.pathname.split('/').pop() || 'employee.html';
         this.querySelectorAll('a[href]').forEach(a => {
             const href = a.getAttribute('href');
             if (href === current) {

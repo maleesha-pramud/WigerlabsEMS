@@ -32,7 +32,7 @@
                 <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Manage all employees in the system.</p>
             </div>
             <div class="mt-4 md:mt-0">
-                <button class="bg-sidebar hover:bg-opacity-90 text-white px-5 py-2.5 rounded-lg flex items-center space-x-2 text-sm font-medium transition-all shadow-lg shadow-slate-300/50 dark:shadow-none">
+                <button id="btn-open-add" class="bg-sidebar hover:bg-opacity-90 text-white px-5 py-2.5 rounded-lg flex items-center space-x-2 text-sm font-medium transition-all shadow-lg shadow-slate-300/50 dark:shadow-none">
                     <span class="material-symbols-outlined text-[18px]">add</span>
                     <span>Add Employee</span>
                 </button>
@@ -45,103 +45,16 @@
                 <table class="w-full text-left text-sm">
                     <thead class="bg-gray-50 dark:bg-slate-800 text-slate-500 dark:text-slate-400 uppercase text-xs font-semibold">
                     <tr>
+                        <th class="px-6 py-4">#</th>
                         <th class="px-6 py-4">Employee</th>
                         <th class="px-6 py-4">Department</th>
                         <th class="px-6 py-4">Position</th>
-                        <th class="px-6 py-4">Role</th>
                         <th class="px-6 py-4">Status</th>
                         <th class="px-6 py-4 text-right">Actions</th>
                     </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-100 dark:divide-slate-700">
-                    <!-- Repeat for each employee -->
-                    <tr class="hover:bg-gray-50 dark:hover:bg-slate-800/50 transition-colors">
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="flex items-center space-x-3">
-                                <img class="w-10 h-10 rounded-full object-cover" src="https://randomuser.me/api/portraits/men/1.jpg" alt="Employee">
-                                <div>
-                                    <p class="font-semibold text-slate-800 dark:text-white">John Doe</p>
-                                    <p class="text-xs text-slate-500 dark:text-slate-400">john.doe@wigerlabs.com</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-slate-700 dark:text-slate-300">Development</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-slate-700 dark:text-slate-300">Software Engineer</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-slate-700 dark:text-slate-300">Employee</td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-800">
-                                Active
-                            </span>
-                        </td>
-                        <td class="px-6 py-4 text-right">
-                            <div class="inline-flex items-center space-x-2">
-                                <button class="text-slate-400 hover:text-primary transition-colors">
-                                    <span class="material-symbols-outlined text-lg">edit</span>
-                                </button>
-                                <button class="text-slate-400 hover:text-red-500 transition-colors">
-                                    <span class="material-symbols-outlined text-lg">delete</span>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                     <tr class="hover:bg-gray-50 dark:hover:bg-slate-800/50 transition-colors">
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="flex items-center space-x-3">
-                                <img class="w-10 h-10 rounded-full object-cover" src="https://randomuser.me/api/portraits/women/2.jpg" alt="Employee">
-                                <div>
-                                    <p class="font-semibold text-slate-800 dark:text-white">Jane Smith</p>
-                                    <p class="text-xs text-slate-500 dark:text-slate-400">jane.smith@wigerlabs.com</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-slate-700 dark:text-slate-300">UI/UX Design</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-slate-700 dark:text-slate-300">UI/UX Designer</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-slate-700 dark:text-slate-300">Employee</td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-800">
-                                Active
-                            </span>
-                        </td>
-                        <td class="px-6 py-4 text-right">
-                            <div class="inline-flex items-center space-x-2">
-                                <button class="text-slate-400 hover:text-primary transition-colors">
-                                    <span class="material-symbols-outlined text-lg">edit</span>
-                                </button>
-                                <button class="text-slate-400 hover:text-red-500 transition-colors">
-                                    <span class="material-symbols-outlined text-lg">delete</span>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                     <tr class="hover:bg-gray-50 dark:hover:bg-slate-800/50 transition-colors">
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="flex items-center space-x-3">
-                                <img class="w-10 h-10 rounded-full object-cover" src="https://randomuser.me/api/portraits/men/3.jpg" alt="Employee">
-                                <div>
-                                    <p class="font-semibold text-slate-800 dark:text-white">Mike Johnson</p>
-                                    <p class="text-xs text-slate-500 dark:text-slate-400">mike.johnson@wigerlabs.com</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-slate-700 dark:text-slate-300">Art & Design</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-slate-700 dark:text-slate-300">Graphic Designer</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-slate-700 dark:text-slate-300">Employee</td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 border border-red-100 dark:border-red-800">
-                                Inactive
-                            </span>
-                        </td>
-                        <td class="px-6 py-4 text-right">
-                            <div class="inline-flex items-center space-x-2">
-                                <button class="text-slate-400 hover:text-primary transition-colors">
-                                    <span class="material-symbols-outlined text-lg">edit</span>
-                                </button>
-                                <button class="text-slate-400 hover:text-red-500 transition-colors">
-                                    <span class="material-symbols-outlined text-lg">delete</span>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
+                    <tbody id="employee-tbody" class="divide-y divide-gray-100 dark:divide-slate-700">
+                    <!-- Populated by JavaScript -->
                     </tbody>
                 </table>
             </div>
@@ -156,15 +69,7 @@
                     <button class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-700 hover:text-slate-600 dark:hover:text-slate-300 transition-colors">
                         <span class="material-symbols-outlined text-sm">chevron_left</span>
                     </button>
-                    <button class="w-8 h-8 flex items-center justify-center rounded-lg bg-black dark:bg-white text-white dark:text-black font-medium text-sm">
-                        1
-                    </button>
-                    <button class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-500 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-700 hover:text-slate-800 dark:hover:text-slate-200 text-sm font-medium transition-colors">
-                        2
-                    </button>
-                    <button class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-500 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-700 hover:text-slate-800 dark:hover:text-slate-200 text-sm font-medium transition-colors">
-                        3
-                    </button>
+                    <button class="w-8 h-8 flex items-center justify-center rounded-lg bg-black dark:bg-white text-white dark:text-black font-medium text-sm">1</button>
                     <button class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-700 hover:text-slate-600 dark:hover:text-slate-300 transition-colors">
                         <span class="material-symbols-outlined text-sm">chevron_right</span>
                     </button>
@@ -173,6 +78,7 @@
         </div>
     </div>
 </main>
+
 <div class="fixed bottom-6 right-6 z-50">
     <button class="bg-sidebar dark:bg-white text-white dark:text-black p-3 rounded-full shadow-lg hover:shadow-xl transition-all transform hover:scale-110 focus:outline-none"
             id="theme-toggle">
@@ -188,6 +94,89 @@
 <!-- Theme Toggle Script -->
 <script src="js/theme.js"></script>
 
+<!-- Web Components -->
+<script type="module" src="js/components/ConfirmModal.js"></script>
+<script type="module" src="js/components/ToastNotification.js"></script>
+
+<!-- Global component instances -->
+<confirm-modal id="confirm-modal"></confirm-modal>
+<toast-notification id="toast"></toast-notification>
+
+<!-- Add / Edit Employee Modal -->
+<div id="emp-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+    <div class="bg-white dark:bg-surface-dark w-full max-w-lg mx-4 rounded-2xl shadow-2xl ring-1 ring-black/5 max-h-[90vh] flex flex-col">
+        <!-- Header -->
+        <div class="flex items-center justify-between px-6 py-5 border-b border-gray-100 dark:border-slate-700 flex-shrink-0">
+            <h3 id="modal-title" class="text-lg font-semibold text-slate-900 dark:text-white">Add Employee</h3>
+            <button id="btn-close-modal" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <!-- Body -->
+        <div class="px-6 py-6 space-y-4 overflow-y-auto">
+            <!-- Name -->
+            <div>
+                <label for="input-emp-name" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Full Name</label>
+                <input id="input-emp-name" type="text" placeholder="e.g. John Doe"
+                       class="w-full px-4 py-2.5 rounded-lg border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-sm text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-primary placeholder-slate-400"/>
+            </div>
+            <!-- Email (add only) -->
+            <div id="email-field">
+                <label for="input-emp-email" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Email</label>
+                <input id="input-emp-email" type="email" placeholder="e.g. john.doe@wigerlabs.com"
+                       class="w-full px-4 py-2.5 rounded-lg border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-sm text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-primary placeholder-slate-400"/>
+            </div>
+            <!-- Password (add only) -->
+            <div id="password-field">
+                <label for="input-emp-password" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Password</label>
+                <input id="input-emp-password" type="password" placeholder="Set a password"
+                       class="w-full px-4 py-2.5 rounded-lg border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-sm text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-primary placeholder-slate-400"/>
+            </div>
+            <!-- Department -->
+            <div>
+                <label for="select-department" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Department</label>
+                <select id="select-department"
+                        class="w-full px-4 py-2.5 rounded-lg border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-sm text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-primary">
+                    <option value="">Loading departments...</option>
+                </select>
+            </div>
+            <!-- Position -->
+            <div>
+                <label for="select-position" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Position</label>
+                <select id="select-position"
+                        class="w-full px-4 py-2.5 rounded-lg border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-sm text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-primary">
+                    <option value="">Loading positions...</option>
+                </select>
+            </div>
+            <!-- Status -->
+            <div>
+                <label for="select-status" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Status</label>
+                <select id="select-status"
+                        class="w-full px-4 py-2.5 rounded-lg border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-sm text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-primary">
+                    <option value="1">Active</option>
+                    <option value="2">Inactive</option>
+                </select>
+            </div>
+            <!-- Error message -->
+            <p id="form-error" class="hidden text-xs text-red-500 pt-1"></p>
+        </div>
+        <!-- Footer -->
+        <div class="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-100 dark:border-slate-700 flex-shrink-0">
+            <button id="btn-cancel-modal"
+                    class="px-4 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors">
+                Cancel
+            </button>
+            <button id="btn-submit-modal"
+                    class="px-5 py-2 rounded-lg text-sm font-medium text-white bg-sidebar hover:bg-opacity-90 transition-colors flex items-center gap-2">
+                <span id="btn-submit-label">Save</span>
+                <span id="btn-submit-spinner" class="hidden material-symbols-outlined text-base animate-spin-slow">progress_activity</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Employee CRUD Logic -->
+<script type="module" src="js/employee.js"></script>
 </body>
 </html>
 

@@ -360,9 +360,11 @@ public class UserService {
     public String searchAdmins(String query) {
         return searchUsersByRoleAndQuery(1, query);
     }
+
     public String searchManagers(String query) {
         return searchUsersByRoleAndQuery(2, query);
     }
+
     public String searchEmployees(String query) {
         return searchUsersByRoleAndQuery(3, query);
     }

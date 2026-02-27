@@ -32,7 +32,8 @@
                 <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Manage all employees in the system.</p>
             </div>
             <div class="mt-4 md:mt-0">
-                <button id="btn-open-add" class="bg-sidebar hover:bg-opacity-90 text-white px-5 py-2.5 rounded-lg flex items-center space-x-2 text-sm font-medium transition-all shadow-lg shadow-slate-300/50 dark:shadow-none">
+                <button id="btn-open-add"
+                        class="bg-sidebar hover:bg-opacity-90 text-white px-5 py-2.5 rounded-lg flex items-center space-x-2 text-sm font-medium transition-all shadow-lg shadow-slate-300/50 dark:shadow-none">
                     <span class="material-symbols-outlined text-[18px]">add</span>
                     <span>Add Employee</span>
                 </button>
@@ -71,7 +72,9 @@
                     <button class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-700 hover:text-slate-600 dark:hover:text-slate-300 transition-colors">
                         <span class="material-symbols-outlined text-sm">chevron_left</span>
                     </button>
-                    <button class="w-8 h-8 flex items-center justify-center rounded-lg bg-black dark:bg-white text-white dark:text-black font-medium text-sm">1</button>
+                    <button class="w-8 h-8 flex items-center justify-center rounded-lg bg-black dark:bg-white text-white dark:text-black font-medium text-sm">
+                        1
+                    </button>
                     <button class="w-8 h-8 flex items-center justify-center rounded-lg text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-700 hover:text-slate-600 dark:hover:text-slate-300 transition-colors">
                         <span class="material-symbols-outlined text-sm">chevron_right</span>
                     </button>
@@ -118,25 +121,30 @@
         <div class="px-6 py-6 space-y-4 overflow-y-auto">
             <!-- Name -->
             <div>
-                <label for="input-emp-name" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Full Name</label>
+                <label for="input-emp-name" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Full
+                    Name</label>
                 <input id="input-emp-name" type="text" placeholder="e.g. John Doe"
                        class="w-full px-4 py-2.5 rounded-lg border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-sm text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-primary placeholder-slate-400"/>
             </div>
             <!-- Email -->
             <div id="email-field">
-                <label for="input-emp-email" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Email</label>
+                <label for="input-emp-email"
+                       class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Email</label>
                 <input id="input-emp-email" type="email" placeholder="e.g. john.doe@wigerlabs.com"
                        class="w-full px-4 py-2.5 rounded-lg border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-sm text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-primary placeholder-slate-400"/>
             </div>
             <!-- Password -->
             <div id="password-field">
-                <label for="input-emp-password" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Password</label>
-                <input id="input-emp-password" type="password" placeholder="Set a password or leave blank to keep unchanged"
+                <label for="input-emp-password"
+                       class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Password</label>
+                <input id="input-emp-password" type="password"
+                       placeholder="Set a password or leave blank to keep unchanged"
                        class="w-full px-4 py-2.5 rounded-lg border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-sm text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-primary placeholder-slate-400"/>
             </div>
             <!-- Department -->
             <div>
-                <label for="select-department" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Department</label>
+                <label for="select-department"
+                       class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Department</label>
                 <select id="select-department"
                         class="w-full px-4 py-2.5 rounded-lg border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-sm text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-primary">
                     <option value="">Loading departments...</option>
@@ -144,7 +152,8 @@
             </div>
             <!-- Position -->
             <div>
-                <label for="select-position" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Position</label>
+                <label for="select-position"
+                       class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Position</label>
                 <select id="select-position"
                         class="w-full px-4 py-2.5 rounded-lg border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-sm text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-primary">
                     <option value="">Loading positions...</option>
@@ -161,13 +170,15 @@
             </div>
             <!-- Hire Date -->
             <div>
-                <label for="input-emp-hire-date" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Hire Date</label>
+                <label for="input-emp-hire-date"
+                       class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Hire Date</label>
                 <input id="input-emp-hire-date" type="date"
                        class="w-full px-4 py-2.5 rounded-lg border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-sm text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-primary placeholder-slate-400"/>
             </div>
             <!-- Salary -->
             <div>
-                <label for="input-emp-salary" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Salary</label>
+                <label for="input-emp-salary"
+                       class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Salary</label>
                 <input id="input-emp-salary" type="number" step="0.01" min="0"
                        placeholder="e.g. 5000.00"
                        class="w-full px-4 py-2.5 rounded-lg border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-sm text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-primary placeholder-slate-400"/>

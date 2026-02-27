@@ -3,8 +3,8 @@
  * Handles all Employee CRUD operations for employee.html.
  * Depends on: api.js, ConfirmModal.js, ToastNotification.js
  */
-import { get, post, put, del } from './api.js';
-import { API_ENDPOINTS } from './utils/constants.js';
+import {get, post, put, del} from './api.js';
+import {API_ENDPOINTS} from './utils/constants.js';
 
 // Wait for web components before running
 await Promise.all([
@@ -13,29 +13,29 @@ await Promise.all([
 ]);
 
 // DOM refs
-const tbody        = document.getElementById('employee-tbody');
-const btnOpenAdd   = document.getElementById('btn-open-add');
-const toast        = document.getElementById('toast');
+const tbody = document.getElementById('employee-tbody');
+const btnOpenAdd = document.getElementById('btn-open-add');
+const toast = document.getElementById('toast');
 const confirmModal = document.getElementById('confirm-modal');
 
 // Modal
-const empModal         = document.getElementById('emp-modal');
-const modalTitle       = document.getElementById('modal-title');
-const inputName        = document.getElementById('input-emp-name');
-const inputEmail       = document.getElementById('input-emp-email');
-const inputPassword    = document.getElementById('input-emp-password');
-const inputHireDate    = document.getElementById('input-emp-hire-date');
-const inputSalary      = document.getElementById('input-emp-salary');
-const emailField       = document.getElementById('email-field');
-const passwordField    = document.getElementById('password-field');
-const selectDept       = document.getElementById('select-department');
-const selectPos        = document.getElementById('select-position');
-const selectStatus     = document.getElementById('select-status');
-const formError        = document.getElementById('form-error');
-const btnCloseModal    = document.getElementById('btn-close-modal');
-const btnCancelModal   = document.getElementById('btn-cancel-modal');
-const btnSubmitModal   = document.getElementById('btn-submit-modal');
-const btnSubmitLabel   = document.getElementById('btn-submit-label');
+const empModal = document.getElementById('emp-modal');
+const modalTitle = document.getElementById('modal-title');
+const inputName = document.getElementById('input-emp-name');
+const inputEmail = document.getElementById('input-emp-email');
+const inputPassword = document.getElementById('input-emp-password');
+const inputHireDate = document.getElementById('input-emp-hire-date');
+const inputSalary = document.getElementById('input-emp-salary');
+const emailField = document.getElementById('email-field');
+const passwordField = document.getElementById('password-field');
+const selectDept = document.getElementById('select-department');
+const selectPos = document.getElementById('select-position');
+const selectStatus = document.getElementById('select-status');
+const formError = document.getElementById('form-error');
+const btnCloseModal = document.getElementById('btn-close-modal');
+const btnCancelModal = document.getElementById('btn-cancel-modal');
+const btnSubmitModal = document.getElementById('btn-submit-modal');
+const btnSubmitLabel = document.getElementById('btn-submit-label');
 const btnSubmitSpinner = document.getElementById('btn-submit-spinner');
 
 // State
@@ -96,17 +96,17 @@ async function populateDropdowns() {
 
 // Modal
 async function openAddModal() {
-    editingId                  = null;
-    modalTitle.textContent     = 'Add Employee';
+    editingId = null;
+    modalTitle.textContent = 'Add Employee';
     btnSubmitLabel.textContent = 'Add';
 
     // Reset fields
-    inputName.value     = '';
-    inputEmail.value    = '';
+    inputName.value = '';
+    inputEmail.value = '';
     inputPassword.value = '';
     inputHireDate.value = '';
-    inputSalary.value   = '';
-    selectStatus.value  = '1';
+    inputSalary.value = '';
+    selectStatus.value = '1';
     hideError();
 
     // Show email/password fields for add
@@ -119,8 +119,8 @@ async function openAddModal() {
 }
 
 async function openEditModal(employee) {
-    editingId                  = employee.id;
-    modalTitle.textContent     = 'Edit Employee';
+    editingId = employee.id;
+    modalTitle.textContent = 'Edit Employee';
     btnSubmitLabel.textContent = 'Save Changes';
     hideError();
 
@@ -134,14 +134,14 @@ async function openEditModal(employee) {
         user = res.data.data;
     }
 
-    inputName.value        = user.name || '';
-    inputEmail.value       = user.email || '';
-    inputPassword.value    = '';
-    inputHireDate.value    = user.hireDate || '';
-    inputSalary.value      = user.salary || '';
-    selectDept.value       = String(user.departmentId);
-    selectPos.value        = String(user.positionId);
-    selectStatus.value     = String(user.statusId);
+    inputName.value = user.name || '';
+    inputEmail.value = user.email || '';
+    inputPassword.value = '';
+    inputHireDate.value = user.hireDate || '';
+    inputSalary.value = user.salary || '';
+    selectDept.value = String(user.departmentId);
+    selectPos.value = String(user.positionId);
+    selectStatus.value = String(user.statusId);
 
     emailField.classList.remove('hidden');
     passwordField.classList.remove('hidden');
@@ -176,7 +176,9 @@ function createViewModal() {
     viewModal = modal;
     viewModalContent = modal.querySelector('#view-modal-content');
     modal.querySelector('#btn-close-view-modal').addEventListener('click', () => modal.classList.add('hidden'));
-    modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.add('hidden'); });
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) modal.classList.add('hidden');
+    });
 }
 
 function openViewModal(employee) {
@@ -215,7 +217,7 @@ async function fetchAndRenderUser(userId) {
 // Status Change
 async function changeStatus(employee, newStatusId) {
     setSubmitLoading(true);
-    const res = await put(API_ENDPOINTS.CHANGE_EMPLOYEE_STATUS(employee.id), { statusId: newStatusId });
+    const res = await put(API_ENDPOINTS.CHANGE_EMPLOYEE_STATUS(employee.id), {statusId: newStatusId});
     setSubmitLoading(false);
     if (res.success && res.data.status) {
         toast.show('Status updated.', 'success');
@@ -279,7 +281,15 @@ function renderRows(employees) {
                         <span class="material-symbols-outlined text-lg pointer-events-none">visibility</span>
                     </button>
                     <button class="btn-edit p-1.5 rounded-lg text-slate-400 hover:text-primary hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors"
-                            data-employee='${JSON.stringify({ id: emp.id, name: emp.name, departmentId: emp.departmentId, positionId: emp.positionId, statusId: emp.statusId, hireDate: emp.hireDate, salary: emp.salary })}'
+                            data-employee='${JSON.stringify({
+        id: emp.id,
+        name: emp.name,
+        departmentId: emp.departmentId,
+        positionId: emp.positionId,
+        statusId: emp.statusId,
+        hireDate: emp.hireDate,
+        salary: emp.salary
+    })}'
                             title="Edit">
                         <span class="material-symbols-outlined text-lg pointer-events-none">edit</span>
                     </button>
@@ -287,7 +297,13 @@ function renderRows(employees) {
                             data-id="${emp.id}" data-name="${escapeHtml(emp.name)}" title="Delete">
                         <span class="material-symbols-outlined text-lg pointer-events-none">delete</span>
                     </button>
-                    <select class="btn-status px-2 py-1 rounded-lg text-xs border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200" data-employee='${JSON.stringify({ id: emp.id, name: emp.name, departmentId: emp.departmentId, positionId: emp.positionId, statusId: emp.statusId })}' title="Change Status">
+                    <select class="btn-status px-2 py-1 rounded-lg text-xs border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200" data-employee='${JSON.stringify({
+        id: emp.id,
+        name: emp.name,
+        departmentId: emp.departmentId,
+        positionId: emp.positionId,
+        statusId: emp.statusId
+    })}' title="Change Status">
                         <option value="1" ${emp.statusId === 1 ? 'selected' : ''}>Active</option>
                         <option value="2" ${emp.statusId === 2 ? 'selected' : ''}>Inactive</option>
                     </select>
@@ -317,28 +333,49 @@ async function loadEmployees() {
 async function handleSubmit() {
     hideError();
 
-    const name       = inputName.value.trim();
-    const email      = inputEmail.value.trim();
-    const password   = inputPassword.value;
-    const deptId     = parseInt(selectDept.value);
-    const posId      = parseInt(selectPos.value);
-    const statusId   = parseInt(selectStatus.value);
-    const hireDate   = inputHireDate.value;
-    const salary     = inputSalary.value;
+    const name = inputName.value.trim();
+    const email = inputEmail.value.trim();
+    const password = inputPassword.value;
+    const deptId = parseInt(selectDept.value);
+    const posId = parseInt(selectPos.value);
+    const statusId = parseInt(selectStatus.value);
+    const hireDate = inputHireDate.value;
+    const salary = inputSalary.value;
 
     // Validation
-    if (!name)       { showError('Full name is required.'); return; }
-    if (!email)      { showError('Email is required.'); return; }
-    if (!deptId)     { showError('Please select a department.'); return; }
-    if (!posId)      { showError('Please select a position.'); return; }
-    if (!hireDate)   { showError('Hire date is required.'); return; }
-    if (!salary || isNaN(Number(salary)) || Number(salary) < 0) { showError('Valid salary is required.'); return; }
+    if (!name) {
+        showError('Full name is required.');
+        return;
+    }
+    if (!email) {
+        showError('Email is required.');
+        return;
+    }
+    if (!deptId) {
+        showError('Please select a department.');
+        return;
+    }
+    if (!posId) {
+        showError('Please select a position.');
+        return;
+    }
+    if (!hireDate) {
+        showError('Hire date is required.');
+        return;
+    }
+    if (!salary || isNaN(Number(salary)) || Number(salary) < 0) {
+        showError('Valid salary is required.');
+        return;
+    }
 
     let res;
 
     if (editingId === null) {
         // Add mode
-        if (!password) { showError('Password is required.'); return; }
+        if (!password) {
+            showError('Password is required.');
+            return;
+        }
         setSubmitLoading(true);
         res = await post(API_ENDPOINTS.ADD_EMPLOYEE, {
             name, email, password,
@@ -382,12 +419,14 @@ btnCancelModal.addEventListener('click', closeModal);
 btnSubmitModal.addEventListener('click', handleSubmit);
 
 // Close modal on backdrop click
-empModal.addEventListener('click', (e) => { if (e.target === empModal) closeModal(); });
+empModal.addEventListener('click', (e) => {
+    if (e.target === empModal) closeModal();
+});
 
 // Table row delegation
 tbody.addEventListener('click', (e) => {
-    const viewBtn   = e.target.closest('.btn-view');
-    const editBtn   = e.target.closest('.btn-edit');
+    const viewBtn = e.target.closest('.btn-view');
+    const editBtn = e.target.closest('.btn-edit');
     const deleteBtn = e.target.closest('.btn-delete');
 
     if (viewBtn) {
@@ -399,12 +438,12 @@ tbody.addEventListener('click', (e) => {
         openEditModal(employee);
     }
     if (deleteBtn) {
-        const { id, name } = deleteBtn.dataset;
+        const {id, name} = deleteBtn.dataset;
         confirmModal.open({
-            title:        'Delete Employee',
-            message:      `Are you sure you want to delete <strong>${escapeHtml(name)}</strong>? This action cannot be undone.`,
+            title: 'Delete Employee',
+            message: `Are you sure you want to delete <strong>${escapeHtml(name)}</strong>? This action cannot be undone.`,
             confirmLabel: 'Delete',
-            onConfirm:    async () => {
+            onConfirm: async () => {
                 const res = await del(API_ENDPOINTS.DELETE_EMPLOYEE(parseInt(id)));
                 if (res.success && res.data.status) {
                     toast.show(res.data.message, 'success');
